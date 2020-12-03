@@ -3,6 +3,8 @@ const User = require('../models/User');
 const {registerValidation,loginValidation} = require('../validation');
 const bcrypt = require("bcryptjs");
 const JWT = require('jsonwebtoken');
+
+
 router.post("/register", async (req,res)=>{
     
     // Validate data of user
@@ -49,9 +51,9 @@ router.post("/login",async (req,res)=>{
 
         //  Create and assign a token
         const token = JWT.sign({_id: user._id}, process.env.TOKEN_SECRET); 
-        res.header('auth-token',token)
+        res.header('auth-token',token).send(token);
 
-        res.send("Loggin in !");
+        // res.send("Loggin in !");
 })
 
 
