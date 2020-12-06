@@ -1,32 +1,43 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const dotenv = require('dotenv');
+const morgan = require('morgan');
+const passport = require('passport');
+const connectDB = require('./config/db');
+
+// --------- Load Config
+dotenv.config({path:"./config/config.env"});
+
+// --------- Passport Config
+require("./config/passport")(passport);
+
+connectDB();
+
 const app = express();
 
-// Import Routes
+// --------- Logger
+app.use(morgan());
+
+
+// --------- Import Routes
 const authRoute = require("./routes/auth");
 const postRoute = require('./routes/posts')
 
 
-dotenv.config();
-
-// DB connect 
-mongoose.connect(
-process.env.DB_CONNECT,
-{useNewUrlParser: true,
-useUnifiedTopology:true,
-},
-
-()=>{ console.log("Connected to DB !");})
-
-
-
-// Middlewires
+// --------- Middlewares
 app.use(express.json());
 
+
+
+// App Middlewares
 app.use('/api/user', authRoute);
 app.use('/api/posts', postRoute);
 
-app.listen(3000, ()=>{
-    console.log("Server is running on port 3000");
+// Passport Middlewares
+app.use(passport.initialize());
+// app.use(passport.session());
+
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, ()=>{
+    console.log(`Server is running on port ${PORT}`);
 })

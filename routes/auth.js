@@ -3,8 +3,16 @@ const User = require('../models/User');
 const {registerValidation,loginValidation} = require('../validation');
 const bcrypt = require("bcryptjs");
 const JWT = require('jsonwebtoken');
+const passport = require("passport");
+const cookieSession = require('cookie-session')
 
-
+// General
+router.get('/',(req,res)=>{
+    res.send(
+        "User Authentication"
+    )
+})
+// Register Route
 router.post("/register", async (req,res)=>{
     
     // Validate data of user
@@ -36,6 +44,7 @@ router.post("/register", async (req,res)=>{
     }
 });
 
+// Login  Route
 router.post("/login",async (req,res)=>{
         // Validate data of user
         const {error} = loginValidation(req.body);
@@ -57,5 +66,35 @@ router.post("/login",async (req,res)=>{
 })
 
 
+const islogged = (req,res,next)=>{
+    if(req.user){
+        next();
+    }
+    else{
+        res.sendStatus(401);
+    }
+}
+
+// Auth with Google
+router.get('/google', passport.authenticate('google', {scope:['profile']}))
+
+// Google auth callback
+router.get('/google/callback', passport.authenticate('google', {failureRedirect:'/failed'}), 
+ (req,res) =>{
+    res.redirect('/good')
+})
+
+router.get('/failed', (req,res)=>{
+    res.send("Authentication Failed")
+})
+router.get('/good', islogged , (req,res)=>{
+    res.send(`Authentication Success, Welcome to RenovateIT ${req.user.displayName}`)
+})
+
+router.get('/logout', (req, res) => {
+    req.session = null;
+    req.logout();
+    res.redirect('/');
+})
 
 module.exports = router;
