@@ -1,17 +1,12 @@
 const router = require("express").Router();
 const User = require('../models/User');
-const {registerValidation,loginValidation} = require('../validation');
+const {registerValidation,loginValidation} = require('../middleware/validation');
 const bcrypt = require("bcryptjs");
 const JWT = require('jsonwebtoken');
 const passport = require("passport");
-const cookieSession = require('cookie-session')
 
-// General
-router.get('/',(req,res)=>{
-    res.send(
-        "User Authentication"
-    )
-})
+
+
 // Register Route
 router.post("/register", async (req,res)=>{
     
@@ -20,7 +15,7 @@ router.post("/register", async (req,res)=>{
     if(error) return res.status(400).send(error.details[0].message);
 
     //  Check for if user already exists in database
-    const emailExist = await User.findOne({email:req.body.email});
+    const emailExist = await User.findOne({email:req.body.email.toLowerCase()});
     if(emailExist) return res.status(400).send("Email already exists");
 
     // Hash the Password
@@ -32,13 +27,17 @@ router.post("/register", async (req,res)=>{
     const user = new User({
         firstname:req.body.firstname,
         lastname:req.body.lastname,
-        email:req.body.email,
+        email:req.body.email.toLowerCase(),
         password:hashedPassword,
-        retypepassword:hashedPassword,
     });
     try {
         const savedUser = await user.save();
-        res.send({user:user._id});
+        
+            res.status(201).send(savedUser);
+
+        // res.send({user:savedUser._id});
+        
+        
     }catch(err){
         res.status(400).send(err)
     }
@@ -51,7 +50,7 @@ router.post("/login",async (req,res)=>{
         if(error) return res.status(400).send(error.details[0].message);
 
         // Checking if email exists
-        const user = await User.findOne({email:req.body.email});
+        const user = await User.findOne({email:req.body.email.toLowerCase()});
         if(!user) return res.status(400).send("Email does not exists");
 
         // Check if Password is correct
@@ -59,42 +58,50 @@ router.post("/login",async (req,res)=>{
         if(!validPassword) return res.status(400).send("Invalid Password");
 
         //  Create and assign a token
-        const token = JWT.sign({_id: user._id}, process.env.TOKEN_SECRET); 
-        res.header('auth-token',token).send(token);
+        const token = JWT.sign(
+            {
+            _id: user._id, 
+            firstname:user.firstname, 
+            lastname:user.lastname, 
+            email:user.email
+             }, 
+            process.env.TOKEN_SECRET); 
+        // res.header('auth-token',token).send(token);
+        res.send(token);
 
         // res.send("Loggin in !");
 })
 
 
-const islogged = (req,res,next)=>{
-    if(req.user){
-        next();
-    }
-    else{
-        res.sendStatus(401);
-    }
-}
+// const islogged = (req,res,next)=>{
+//     if(req.user){
+//         next();
+//     }
+//     else{
+//         res.sendStatus(401);
+//     }
+// }
 
-// Auth with Google
-router.get('/google', passport.authenticate('google', {scope:['profile']}))
+// // Auth with Google
+// router.get('/google', passport.authenticate('google', {scope:['profile']}))
 
-// Google auth callback
-router.get('/google/callback', passport.authenticate('google', {failureRedirect:'/failed'}), 
- (req,res) =>{
-    res.redirect('/good')
-})
+// // Google auth callback
+// router.get('/google/callback', passport.authenticate('google', {failureRedirect:'/failed'}), 
+//  (req,res) =>{
+//     res.redirect('/good')
+// })
 
-router.get('/failed', (req,res)=>{
-    res.send("Authentication Failed")
-})
-router.get('/good', islogged , (req,res)=>{
-    res.send(`Authentication Success, Welcome to RenovateIT ${req.user.displayName}`)
-})
+// router.get('/failed', async (req,res)=>{
+//     res.send("Authentication Failed")
+// })
+// router.get('/good', islogged , async(req,res)=>{
+//     res.send(`Authentication Success, Welcome to RenovateIT ${req.user.displayName}`)
+// })
 
-router.get('/logout', (req, res) => {
-    req.session = null;
-    req.logout();
-    res.redirect('/');
-})
+// router.get('/logout', async (req, res) => {
+//     req.session = null;
+//     req.logout();
+//     res.redirect('/');
+// })
 
 module.exports = router;

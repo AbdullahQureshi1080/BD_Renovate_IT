@@ -13,8 +13,28 @@ module.exports = function(passport){
                 callbackURL: '/api/user/google/callback',
             },
              (accessToken, refreshToken, profile, done) => {
-                console.log(profile);
-                return done(null,profile);
+                //  const newUser ={
+                //     googleId:profile.id,
+                //     // displayName:profile.displayName,
+                //     firstName:profile.name.givenName,
+                //     lastName:profile.name.familyName,
+                //     image:profile.photos[0].value, 
+                //     // email:profile.
+                //  }
+                //  try{
+                //      let user =  User.findOne({googleId:profile.id})
+                //     if (user){
+                //         done(null,user)
+                //     }
+                //     else{
+                //         user =  User.create(newUser);
+                //         done(null,err)
+                //     }
+                //  }catch(err){
+                //      console.log(err);
+                //  }
+                
+                // return done(null,profile);
             }
         )
     )

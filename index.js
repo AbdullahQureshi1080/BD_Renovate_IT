@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const passport = require('passport');
 const connectDB = require('./config/db');
+const cors = require("cors");
 
 // --------- Load Config
 dotenv.config({path:"./config/config.env"});
@@ -10,12 +11,17 @@ dotenv.config({path:"./config/config.env"});
 // --------- Passport Config
 require("./config/passport")(passport);
 
+// Connect to DB
 connectDB();
 
+// --------- Initialize Express
 const app = express();
 
 // --------- Logger
 app.use(morgan());
+
+// --------- Cors
+app.use(cors());
 
 
 // --------- Import Routes
@@ -38,6 +44,7 @@ app.use(passport.initialize());
 
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, ()=>{
+const HOST = process.env.HOST_IP;
+app.listen(PORT, HOST, ()=>{
     console.log(`Server is running on port ${PORT}`);
 })

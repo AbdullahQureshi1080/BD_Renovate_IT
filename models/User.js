@@ -3,18 +3,18 @@ const mongoose = require("mongoose");
 const userScheme = new  mongoose.Schema({
     googleId:{
         type:String,
-        required:true,
+        // required:true,
     },
     firstname:{
         type:String,
         required:true,
-        min:6,
+        min:3,
         max:255,
     },
     lastname:{
         type:String,
         required:true,
-        min:6,
+        min:3,
         max:255,
     },
     email:{
@@ -23,20 +23,14 @@ const userScheme = new  mongoose.Schema({
         max:255,
         min:6
     },
-    image:{
-        type:String
-    },
     password:{
         type:String,
         required: true,
         max:1024,
         min:6,
     },
-    retypepassword:{
-        type:String,
-        required: true,
-        max:1024,
-        min:6,
+    image:{
+        type:String
     },
     date:{
         type:Date,
