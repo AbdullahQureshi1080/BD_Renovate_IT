@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const passport = require('passport');
 const connectDB = require('./config/db');
-const cors = require("cors");
+// const cors = require("cors");
 
 // --------- Load Config
 dotenv.config({path:"./config/config.env"});
@@ -21,7 +21,7 @@ const app = express();
 app.use(morgan());
 
 // --------- Cors
-app.use(cors());
+// app.use(cors());
 
 
 // --------- Import Routes

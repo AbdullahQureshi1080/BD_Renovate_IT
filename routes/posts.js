@@ -4,7 +4,7 @@ const User = require("../models/User");
 // const {registerValidation,loginValidation} = require('../validation');
 // const bcrypt = require("bcryptjs");
 // const JWT = require('jsonwebtoken');
-const verify = require('./verifyToken');
+const verify = require('../middleware/verifyToken');
 
 router.get("/", verify, (req,res)=>{
     res.send(req.user);

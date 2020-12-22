@@ -16,7 +16,7 @@ router.post("/register", async (req,res)=>{
 
     //  Check for if user already exists in database
     const emailExist = await User.findOne({email:req.body.email.toLowerCase()});
-    if(emailExist) return res.status(400).send("Email already exists");
+    if(emailExist) return res.status(400).send({error:"Email already exists"});
 
     // Hash the Password
          // String with complexity of 10
@@ -32,12 +32,7 @@ router.post("/register", async (req,res)=>{
     });
     try {
         const savedUser = await user.save();
-        
             res.status(201).send(savedUser);
-
-        // res.send({user:savedUser._id});
-        
-        
     }catch(err){
         res.status(400).send(err)
     }
@@ -66,10 +61,7 @@ router.post("/login",async (req,res)=>{
             email:user.email
              }, 
             process.env.TOKEN_SECRET); 
-        // res.header('auth-token',token).send(token);
         res.send(token);
-
-        // res.send("Loggin in !");
 })
 
 
