@@ -23,8 +23,30 @@ const loginValidation = (data)=>{
      const validatedUser = userValidationSchema.validate(data);
      return validatedUser;
 }
-
-
-module.exports.registerValidation = registerValidation;
-module.exports.loginValidation = loginValidation;
-
+const updateValidation = (data) => {
+    const userValidationSchema = Joi.object({
+      email: Joi.string().min(6).required().email(),
+      firstname: Joi.string().min(3).required(),
+      lastname: Joi.string().min(3).required(),
+      jobtitle: Joi.string().min(6),
+      about: Joi.string().min(15),
+      location: Joi.string().min(5),
+    });
+    const validatedUser = userValidationSchema.validate(data);
+    return validatedUser;
+  };
+   
+  const getValidation = (data) => {
+    const userValidationSchema = Joi.object({
+      email: Joi.string().min(6).required().email(),
+    });
+    const getValidation = userValidationSchema.validate(data);
+    return getValidation;
+  };
+   
+  module.exports.registerValidation = registerValidation;
+  module.exports.loginValidation = loginValidation;
+  module.exports.updateValidation = updateValidation;
+  module.exports.getValidation = getValidation;
+  
+  
