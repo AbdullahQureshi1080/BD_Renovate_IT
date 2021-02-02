@@ -4,18 +4,18 @@ const { updateValidation, getValidation } = require("../middleware/validation");
 const { upload } = require("../middleware/upload");
  
 
-router.post ("/imageUpload",async(req,res)=>{
-    const {imageSource, userId} = req.body;
-    console.log(imageSource,userId);
-    if((imageSource && userId)!=null || ""){
-        const uploadResult = upload(imageSource,userId);
-        console.log(uploadResult);
-        res.status(200).send(uploadResult)
-    }
-    else{
-        res.status(400).send("Image Source and userId not valid");
-    }
-})
+// router.post ("/imageUpload",async(req,res)=>{
+//     const {imageSource, userId} = req.body;
+//     console.log(imageSource,userId);
+//     if((imageSource && userId)!=null || ""){
+//         const uploadResult = upload(imageSource,userId);
+//         console.log(uploadResult);
+//         res.status(200).send(uploadResult)
+//     }
+//     else{
+//         res.status(400).send("Image Source and userId not valid");
+//     }
+// })
 
 router.post("/updateProfile", async (req, res) => {
   const { error } = updateValidation(req.body);

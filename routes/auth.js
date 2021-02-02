@@ -55,24 +55,20 @@ router.post("/login",async (req,res)=>{
         //  Create and assign a token
         const token = JWT.sign(
             {
-            _id: user._id, 
-            firstname:user.firstname, 
-            lastname:user.lastname, 
-            email:user.email
-             }, 
+                _id: user._id,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email,
+                about: user.about,
+                location: user.location,
+                jobtitle: user.jobtitle,
+                image:user.image,
+              },
+
             process.env.TOKEN_SECRET); 
         res.send(token);
 })
 
-
-// const islogged = (req,res,next)=>{
-//     if(req.user){
-//         next();
-//     }
-//     else{
-//         res.sendStatus(401);
-//     }
-// }
 
 // // Auth with Google
 // router.get('/google', passport.authenticate('google', {scope:['profile']}))

@@ -31,6 +31,7 @@ const updateValidation = (data) => {
       jobtitle: Joi.string().min(6),
       about: Joi.string().min(15),
       location: Joi.string().min(5),
+      image:Joi.string(),
     });
     const validatedUser = userValidationSchema.validate(data);
     return validatedUser;
