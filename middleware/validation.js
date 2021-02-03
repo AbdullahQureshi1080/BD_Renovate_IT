@@ -29,6 +29,7 @@ const updateValidation = (data) => {
       firstname: Joi.string().min(3).required(),
       lastname: Joi.string().min(3).required(),
       jobtitle: Joi.string().min(6),
+      jobcategory: Joi.string().min(4),
       about: Joi.string().min(15),
       location: Joi.string().min(5),
       image:Joi.string(),

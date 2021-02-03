@@ -1,26 +1,12 @@
 const router = require("express").Router();
 const User = require("../models/User.js");
 const { updateValidation, getValidation } = require("../middleware/validation");
-const { upload } = require("../middleware/upload");
- 
 
-// router.post ("/imageUpload",async(req,res)=>{
-//     const {imageSource, userId} = req.body;
-//     console.log(imageSource,userId);
-//     if((imageSource && userId)!=null || ""){
-//         const uploadResult = upload(imageSource,userId);
-//         console.log(uploadResult);
-//         res.status(200).send(uploadResult)
-//     }
-//     else{
-//         res.status(400).send("Image Source and userId not valid");
-//     }
-// })
 
 router.post("/updateProfile", async (req, res) => {
   const { error } = updateValidation(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
   console.log(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
   await User.updateOne(
     { email: req.body.email },
     {
@@ -30,6 +16,7 @@ router.post("/updateProfile", async (req, res) => {
         location: req.body.location,
         about: req.body.about,
         jobtitle: req.body.jobtitle,
+        jobcategory: req.body.jobcategory,
         image:req.body.image,
       },
     },
@@ -45,8 +32,18 @@ router.post("/updateProfile", async (req, res) => {
     const updatedUser = await User.findOne({
       email: req.body.email.toLowerCase(),
     });
-    console.log(updatedUser);
-    res.status(201).send(updatedUser);
+    const sendData = {
+      firstname: updatedUser.firstname,
+      lastname: updatedUser.lastname,
+      email: updatedUser.email,
+      about: updatedUser.about,
+      location: updatedUser.location,
+      jobtitle: updatedUser.jobtitle,
+      jobcategory:updatedUser.jobcategory,
+      image: updatedUser.image,
+    };
+    console.log(sendData);
+    res.status(201).send(sendData);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -67,6 +64,8 @@ router.post("/getProfile", async (req, res) => {
     about: user.about,
     location: user.location,
     jobtitle: user.jobtitle,
+    jobcategory:user.jobcategory,
+    image: user.image,
   };
   res.status(201).send(sendData);
 });
