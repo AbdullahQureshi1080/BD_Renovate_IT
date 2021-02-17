@@ -18,6 +18,7 @@ router.post("/updateProfile", async (req, res) => {
         jobtitle: req.body.jobtitle,
         jobcategory: req.body.jobcategory,
         image:req.body.image,
+        // posts:req.body.posts,
       },
     },
     function (err, docs) {
@@ -66,6 +67,7 @@ router.post("/getProfile", async (req, res) => {
     jobtitle: user.jobtitle,
     jobcategory:user.jobcategory,
     image: user.image,
+    posts:user.posts,
   };
   res.status(201).send(sendData);
 });
