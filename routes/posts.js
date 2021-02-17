@@ -14,6 +14,7 @@ router.post("/newPost", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
   const user = await User.findOne({ email: req.body.email.toLowerCase() });
   if (!user) res.send("User does not exist, invalid email");
+  const name = `${user.firstname} ${user.lastname}`
   console.log(req.body);
   const newPost = new Post({
     title: req.body.title,
@@ -21,6 +22,8 @@ router.post("/newPost", async (req, res) => {
     budget: req.body.budget,
     images: req.body.images,
     documents: req.body.documents,
+    creator:name,
+    creatorImage:user.image,
   });
  
   try {
@@ -29,10 +32,11 @@ router.post("/newPost", async (req, res) => {
       { email: req.body.email },
       {
         $addToSet: {
-          posts: {
-            id: savedPost._id,
-            date: savedPost.date,
-          },
+          posts: 
+            // id: savedPost._id,
+            // date: savedPost.date,
+            savedPost
+
         },
       },
       function (err, docs) {
@@ -123,6 +127,13 @@ router.post("/deletePost", async (req, res) => {
   }
 });
  
+// Get All Posts => All Posts
+
+router.get('/getAllPosts',async(req,res)=>{
+  const allPosts = await Post.find();
+  res.status(201).send(allPosts);
+})
+
 module.exports = router;
  
 

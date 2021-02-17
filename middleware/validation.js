@@ -33,6 +33,8 @@ const updateValidation = (data) => {
     jobtitle: Joi.string().min(6),
     about: Joi.string().min(15),
     location: Joi.string().min(5),
+    jobcategory:Joi.string().required(),
+    image:Joi.string(),
   });
   const validatedUser = userValidationSchema.validate(data);
   return validatedUser;
@@ -62,6 +64,8 @@ const newPostValidation = (data) => {
  
 const updatePostValidation = (data) => {
   const postValidationScheme = Joi.object({
+    // creator:Joi.string().required(),
+    // creatorImage:Joi.string(),
     id: Joi.required(),
     title: Joi.string().min(5).required(),
     description: Joi.string(),

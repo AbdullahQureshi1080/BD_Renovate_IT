@@ -19,6 +19,17 @@ const postScheme = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  budget:{
+      type:String,
+  },
+ creator:{
+      type:String,
+      required:true,
+  },
+  creatorImage:{
+      type:String,
+  }
 });
  
+// module.exports.postScheme = postScheme;
 module.exports = mongoose.model("Post", postScheme);
