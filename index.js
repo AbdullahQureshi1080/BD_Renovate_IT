@@ -28,10 +28,11 @@ app.use(cors());
 const authRoute = require("./routes/auth");
 const profileRoute = require("./routes/profile");
 // const cloudStorage = require("./routes/cloudStorage");
-// const postRoute = require("./routes/posts");
+const postRoute = require("./routes/posts");
  
 // --------- Middlewares
 app.use(express.json());
+
 app.use(bodyParser.json());
  
 // Passport Middlewares
@@ -41,8 +42,9 @@ app.use(bodyParser.json());
 // App Middlewares
 app.use("/api/user", authRoute);
 app.use("/api/profile", profileRoute);
+app.use("/api/posts", postRoute);
+
 // app.use("/api/cloudStorage", cloudStorage);
-// app.use("/api/posts", postRoute);
  
 // Port/Host Connection
 const PORT = process.env.PORT || 3000;
