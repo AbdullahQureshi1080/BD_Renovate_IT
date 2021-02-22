@@ -2,6 +2,17 @@
 const Joi = require("joi");
 // const { model } = require("mongoose");
  
+
+// General Validations 
+
+const emailValidation = (data)=>{
+  const emailValidationSchema = Joi.object({
+    email:Joi.string().min(6).required().email(),
+  })
+  const emailValidation = emailValidationSchema.validate(data);
+  return emailValidation;
+}
+
 // Auth Validations ----------------------------------
 const registerValidation = (data) => {
   const userValidationSchema = Joi.object({
@@ -94,4 +105,5 @@ module.exports.getValidation = getValidation;
 module.exports.newPostValidation = newPostValidation;
 module.exports.updatePostValidation = updatePostValidation;
 module.exports.deletePostValidation = deletePostValidation;
+module.exports.emailValidation = emailValidation;
  
