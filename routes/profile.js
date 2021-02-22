@@ -67,7 +67,7 @@ router.post("/getProfile", async (req, res) => {
     jobtitle: user.jobtitle,
     jobcategory:user.jobcategory,
     image: user.image,
-    posts:user.posts,
+    // posts:user.posts,
   };
   res.status(201).send(sendData);
 });

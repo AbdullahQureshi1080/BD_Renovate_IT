@@ -3,6 +3,7 @@ const {
   newPostValidation,
   updatePostValidation,
   deletePostValidation,
+  emailValidation,
 } = require("../middleware/validation");
 const User = require("../models/User");
 const Post = require("../models/Post");
@@ -132,6 +133,19 @@ router.post("/deletePost", async (req, res) => {
 router.get('/getAllPosts',async(req,res)=>{
   const allPosts = await Post.find();
   res.status(201).send(allPosts);
+})
+
+router.post("/getUserPosts", async (req,res)=>{
+  // console.log(req.body)
+  const {error} = emailValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  const user = await User.findOne({
+    email: req.body.email.toLowerCase(),
+  });
+  if (!user) res.status(400).send("User does not exist");
+  const userPosts = user.posts;
+  console.log(userPosts);
+  res.status(201).send(userPosts);
 })
 
 module.exports = router;
