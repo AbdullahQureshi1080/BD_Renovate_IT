@@ -33,10 +33,11 @@ router.post("/newPost", async (req, res) => {
       { email: req.body.email },
       {
         $addToSet: {
-          posts: 
-            // id: savedPost._id,
-            // date: savedPost.date,
-            savedPost
+          posts: {
+            id: savedPost._id,
+            date: savedPost.date,
+          }
+            // savedPost
 
         },
       },
@@ -111,6 +112,7 @@ router.post("/deletePost", async (req, res) => {
     await User.updateOne(
       { email: req.body.email },
       {
+        // $pull: { posts:  {_id:mongoose.Types.ObjectId(req.body.id)}} ,
         $pull: { posts: { id: mongoose.Types.ObjectId(req.body.id) } },
       },
  
@@ -144,7 +146,7 @@ router.post("/getUserPosts", async (req,res)=>{
   });
   if (!user) res.status(400).send("User does not exist");
   const userPosts = user.posts;
-  console.log(userPosts);
+  // console.log(userPosts);
   res.status(201).send(userPosts);
 })
 
