@@ -97,6 +97,51 @@ const deletePostValidation = (data) => {
   const post = postValidationScheme.validate(data);
   return post;
 };
+
+// Project Validations ----------------------------------
+const newProjectValidation = (data) => {
+  const projectValidationScheme = Joi.object({
+    email: Joi.string().min(6).required().email(),
+    title: Joi.string().min(5).required(),
+    description: Joi.string(),
+    category: Joi.string(),
+    data:Joi.object(),
+  });
+  const project = projectValidationScheme.validate(data);
+  return project;
+};
+ 
+const updateProjectValidation = (data) => {
+  const projectValidationScheme = Joi.object({
+    id: Joi.required(),
+    title: Joi.string().min(5).required(),
+    description: Joi.string(),
+    category: Joi.string(),
+    data:Joi.object(),
+  });
+  const project = projectValidationScheme.validate(data);
+  return project;
+};
+ 
+// deleteProjectValidation;
+const deleteProjectValidation = (data) => {
+  const projectValidationScheme = Joi.object({
+    email: Joi.string().min(6).required().email(),
+    id: Joi.required(),
+  });
+  const project = projectValidationScheme.validate(data);
+  return project;
+};
+
+const commentValidation = (data) => {
+  const commentValidationScheme = Joi.object({
+    userId: Joi.string().required(),
+    projectId: Joi.required(),
+    value:Joi.string(),
+  });
+  const comment = commentValidationScheme.validate(data);
+  return comment;
+};
  
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
@@ -106,4 +151,9 @@ module.exports.newPostValidation = newPostValidation;
 module.exports.updatePostValidation = updatePostValidation;
 module.exports.deletePostValidation = deletePostValidation;
 module.exports.emailValidation = emailValidation;
+module.exports.newProjectValidation = newProjectValidation;
+module.exports.updateProjectValidation = updateProjectValidation;
+module.exports.deleteProjectValidation = deleteProjectValidation;
+module.exports.commentValidation = commentValidation;
+
  
