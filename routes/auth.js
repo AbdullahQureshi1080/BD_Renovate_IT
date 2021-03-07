@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const User = require('../models/User');
-const {registerValidation,loginValidation} = require('../middleware/validation');
+const {registerValidation,loginValidation,emailValidation} = require('../middleware/validation');
 const bcrypt = require("bcryptjs");
 const JWT = require('jsonwebtoken');
 const passport = require("passport");
@@ -68,6 +68,34 @@ router.post("/login",async (req,res)=>{
             process.env.TOKEN_SECRET); 
         res.send(token);
 })
+
+router.post("/getAllUsers", async (req,res)=>{
+    // console.log(req.body)
+    const {error} = emailValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    const user = await User.findOne({
+      email: req.body.email.toLowerCase(),
+    });
+    if (!user) res.status(400).send("Invalid request for get-all-users");
+    const allUsers = await User.find();
+    console.log(allUsers);
+    const userData = allUsers.map(user=> ({
+        name :`${user.firstname} ${user.lastname}`,
+        _id:user.id,
+        email: user.email,
+        about: user.about,
+        location: user.location,
+        jobtitle: user.jobtitle,
+        jobcategory:user.jobcategory,
+        image:user.image,
+        posts:user.posts,
+        projects:user.projects,
+    }
+        ));
+
+    console.log(userData);
+    res.status(201).send(userData);
+  })
 
 
 // // Auth with Google

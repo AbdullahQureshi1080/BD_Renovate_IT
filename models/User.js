@@ -50,6 +50,7 @@ const mongoose = require("mongoose");
     default: Date.now,
   },
   posts:[],
+  projects:[],
 });
  
 module.exports = mongoose.model("User", userScheme);
