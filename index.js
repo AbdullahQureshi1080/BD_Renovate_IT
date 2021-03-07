@@ -27,8 +27,8 @@ app.use(cors());
 // --------- Import Routes
 const authRoute = require("./routes/auth");
 const profileRoute = require("./routes/profile");
-// const cloudStorage = require("./routes/cloudStorage");
 const postRoute = require("./routes/posts");
+const projectRoute = require("./routes/projects");
  
 // --------- Middlewares
 app.use(express.json());
@@ -43,6 +43,7 @@ app.use(bodyParser.json());
 app.use("/api/user", authRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api/posts", postRoute);
+app.use("/api/projects", projectRoute);
 
 // app.use("/api/cloudStorage", cloudStorage);
  
