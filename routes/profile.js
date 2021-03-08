@@ -34,6 +34,7 @@ router.post("/updateProfile", async (req, res) => {
       email: req.body.email.toLowerCase(),
     });
     const sendData = {
+      _id:updatedUser._id,
       firstname: updatedUser.firstname,
       lastname: updatedUser.lastname,
       email: updatedUser.email,
@@ -59,6 +60,7 @@ router.post("/getProfile", async (req, res) => {
   if (!user) res.status(400).send("User does not exist");
  
   const sendData = {
+    _id:user._id,
     firstname: user.firstname,
     lastname: user.lastname,
     email: user.email,
