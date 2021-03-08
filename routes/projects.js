@@ -4,7 +4,8 @@ const {
   updateProjectValidation,
   deleteProjectValidation,
   emailValidation,
-  commentValidation
+  commentValidation,
+  likeValidation,
 } = require("../middleware/validation");
 const User = require("../models/User");
 const Project = require("../models/Project");
@@ -167,6 +168,45 @@ router.post("/commentOnProject", async(req,res)=>{
           commentor: `${user.firstname}${user.lastname}`,
           commentorImage: user.image,
           comment:req.body.value,
+          date: Date.now(),
+        }
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedProject = await Project.findOne({
+      _id: req.body.projectId,
+    });
+    // console.log(updatedProject.comments);
+    const comments = updatedProject.comments;
+    res.status(201).send(comments);
+  } catch (err) {
+    res.status(400).send("An Error Occured", err);
+  }
+})
+
+router.post("/likeProject", async(req,res)=>{
+  const {error} = likeValidation(req.body);
+  if(error) return res.status(400).send(error.details[0].message);
+  const user = await User.findById({_id:req.body.userId});
+  if (!user) res.status(400).send("User does not exist");
+  // const findProject = await Project.find({_id:req.body.projectId});
+  await Project.updateOne(
+    {_id:req.body.projectId},
+    {
+      $addToSet: {
+        likes: {
+          likerId: user._id,
+          likerName: `${user.firstname}${user.lastname}`,
+          likerImage: user.image,
+          liked:req.body.liked,
           date: Date.now(),
         }
       },

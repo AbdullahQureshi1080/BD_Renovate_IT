@@ -25,6 +25,7 @@ const projectScheme = new mongoose.Schema({
        type:String,
    },
   comments:[],
+  likes:[],
   date: {
     type: Date,
     default: Date.now,

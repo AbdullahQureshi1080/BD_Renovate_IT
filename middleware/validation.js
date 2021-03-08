@@ -143,6 +143,15 @@ const commentValidation = (data) => {
   return comment;
 };
  
+const likeValidation = (data) => {
+  const likeValidationScheme = Joi.object({
+    userId: Joi.string().required(),
+    projectId: Joi.required(),
+    value:Joi.number(),
+  });
+  const like = likeValidationScheme.validate(data);
+  return like;
+};
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.updateValidation = updateValidation;
@@ -155,5 +164,6 @@ module.exports.newProjectValidation = newProjectValidation;
 module.exports.updateProjectValidation = updateProjectValidation;
 module.exports.deleteProjectValidation = deleteProjectValidation;
 module.exports.commentValidation = commentValidation;
+module.exports.likeValidation = likeValidation;
 
  
