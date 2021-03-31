@@ -5,7 +5,7 @@ const { updateValidation, getValidation } = require("../middleware/validation");
 
 router.post("/updateProfile", async (req, res) => {
   const { error } = updateValidation(req.body);
-  console.log(req.body);
+  // console.log(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   await User.updateOne(
     { email: req.body.email },
@@ -43,8 +43,9 @@ router.post("/updateProfile", async (req, res) => {
       jobtitle: updatedUser.jobtitle,
       jobcategory:updatedUser.jobcategory,
       image: updatedUser.image,
+      chats:updatedUser.chats,
     };
-    console.log(sendData);
+    // console.log(sendData);
     res.status(201).send(sendData);
   } catch (err) {
     res.status(400).send(err);
@@ -69,6 +70,7 @@ router.post("/getProfile", async (req, res) => {
     jobtitle: user.jobtitle,
     jobcategory:user.jobcategory,
     image: user.image,
+    chats:user.chats,
     // posts:user.posts,
   };
   res.status(201).send(sendData);

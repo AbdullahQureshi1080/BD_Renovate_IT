@@ -6,6 +6,7 @@ const {
   emailValidation,
   commentValidation,
   likeValidation,
+  getCommentValidation,
 } = require("../middleware/validation");
 const User = require("../models/User");
 const Project = require("../models/Project");
@@ -186,6 +187,24 @@ router.post("/commentOnProject", async(req,res)=>{
     });
     // console.log(updatedProject.comments);
     const comments = updatedProject.comments;
+    res.status(201).send(comments);
+  } catch (err) {
+    res.status(400).send("An Error Occured", err);
+  }
+})
+
+router.post("/getProjectComments",async (req,res)=>{
+  // console.log(req.body);
+  const {error} = getCommentValidation(req.body);
+  if(error) return res.status(400).send(error.details[0].message);
+  // const user = await User.findById({_id:req.body.userId});
+  // if (!user) res.status(400).send("User does not exist");
+  try {
+    const project = await Project.findOne({
+      _id: req.body.projectId,
+    });
+    const comments =   project.comments;
+    // console.log(comments);
     res.status(201).send(comments);
   } catch (err) {
     res.status(400).send("An Error Occured", err);

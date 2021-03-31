@@ -29,7 +29,7 @@ const authRoute = require("./routes/auth");
 const profileRoute = require("./routes/profile");
 const postRoute = require("./routes/posts");
 const projectRoute = require("./routes/projects");
- 
+const chatRoute = require("./routes/chats");
 // --------- Middlewares
 app.use(express.json());
 
@@ -44,6 +44,8 @@ app.use("/api/user", authRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/projects", projectRoute);
+app.use("/api/chats", chatRoute);
+
 
 // app.use("/api/cloudStorage", cloudStorage);
  

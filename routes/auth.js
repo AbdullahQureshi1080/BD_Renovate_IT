@@ -63,6 +63,7 @@ router.post("/login",async (req,res)=>{
                 location: user.location,
                 jobtitle: user.jobtitle,
                 image:user.image,
+                chats:user.chats,
               },
 
             process.env.TOKEN_SECRET); 
@@ -78,7 +79,7 @@ router.post("/getAllUsers", async (req,res)=>{
     });
     if (!user) res.status(400).send("Invalid request for get-all-users");
     const allUsers = await User.find();
-    console.log(allUsers);
+    // console.log(allUsers);
     const userData = allUsers.map(user=> ({
         name :`${user.firstname} ${user.lastname}`,
         _id:user.id,
@@ -93,7 +94,7 @@ router.post("/getAllUsers", async (req,res)=>{
     }
         ));
 
-    console.log(userData);
+    // console.log(userData);
     res.status(201).send(userData);
   })
 

@@ -136,10 +136,19 @@ const deleteProjectValidation = (data) => {
 const commentValidation = (data) => {
   const commentValidationScheme = Joi.object({
     userId: Joi.string().required(),
-    projectId: Joi.required(),
+    projectId: Joi.string().required(),
     value:Joi.string(),
   });
   const comment = commentValidationScheme.validate(data);
+  return comment;
+};
+
+const getCommentValidation = (data) => {
+  const getCommentValidationScheme = Joi.object({
+    // userId: Joi.string().required(),
+    projectId: Joi.string().required(),
+  });
+  const comment = getCommentValidationScheme.validate(data);
   return comment;
 };
  
@@ -152,6 +161,21 @@ const likeValidation = (data) => {
   const like = likeValidationScheme.validate(data);
   return like;
 };
+
+const chatValidation = (data) => {
+  const chatValidationScheme = Joi.object({
+    chatId: Joi.string().required(),
+    senderEmail: Joi.string().min(6).required().email(),
+    recieverEmail: Joi.string().min(6).required().email(),
+  });
+  const chat = chatValidationScheme.validate(data);
+  return chat;
+};
+
+
+
+
+// Exports
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.updateValidation = updateValidation;
@@ -165,5 +189,7 @@ module.exports.updateProjectValidation = updateProjectValidation;
 module.exports.deleteProjectValidation = deleteProjectValidation;
 module.exports.commentValidation = commentValidation;
 module.exports.likeValidation = likeValidation;
+module.exports.getCommentValidation = getCommentValidation;
+module.exports.chatValidation = chatValidation;
 
  
