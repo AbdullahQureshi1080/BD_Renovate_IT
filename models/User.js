@@ -52,6 +52,7 @@ const mongoose = require("mongoose");
   posts:[],
   projects:[],
   chats:[],
+  firms:[],
 });
  
 module.exports = mongoose.model("User", userScheme);

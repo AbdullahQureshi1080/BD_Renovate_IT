@@ -162,6 +162,8 @@ const likeValidation = (data) => {
   return like;
 };
 
+
+// ------Chat Validations
 const chatValidation = (data) => {
   const chatValidationScheme = Joi.object({
     chatId: Joi.string().required(),
@@ -170,6 +172,19 @@ const chatValidation = (data) => {
   });
   const chat = chatValidationScheme.validate(data);
   return chat;
+};
+
+
+// ---Firm Validations
+const newFirmValidation = (data) => {
+  const firmValidationScheme = Joi.object({
+    email: Joi.string().min(6).required().email(),
+    title: Joi.string().min(5).required(),
+    description: Joi.string(),
+    members: Joi.object(),
+  });
+  const firm = firmValidationScheme.validate(data);
+  return firm;
 };
 
 
@@ -191,5 +206,5 @@ module.exports.commentValidation = commentValidation;
 module.exports.likeValidation = likeValidation;
 module.exports.getCommentValidation = getCommentValidation;
 module.exports.chatValidation = chatValidation;
-
+module.exports.newFirmValidation = newFirmValidation;
  
