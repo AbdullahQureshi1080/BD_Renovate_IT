@@ -14,6 +14,7 @@ const firmScheme = new mongoose.Schema({
     type: String,
   },
   members:[],
+  notes:[],
  creator:{
       type:String,
       required:true,
