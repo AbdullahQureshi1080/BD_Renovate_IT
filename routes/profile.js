@@ -44,6 +44,7 @@ router.post("/updateProfile", async (req, res) => {
       jobcategory:updatedUser.jobcategory,
       image: updatedUser.image,
       chats:updatedUser.chats,
+      firms:updatedUser.firms,
     };
     // console.log(sendData);
     res.status(201).send(sendData);
@@ -71,6 +72,7 @@ router.post("/getProfile", async (req, res) => {
     jobcategory:user.jobcategory,
     image: user.image,
     chats:user.chats,
+    firms:user.firms,
     // posts:user.posts,
   };
   res.status(201).send(sendData);

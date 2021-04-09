@@ -64,6 +64,9 @@ router.post("/login",async (req,res)=>{
                 jobtitle: user.jobtitle,
                 image:user.image,
                 chats:user.chats,
+                posts:user.posts,
+                projects:user.projects,
+                firms:user.firms,
               },
 
             process.env.TOKEN_SECRET); 
@@ -91,6 +94,7 @@ router.post("/getAllUsers", async (req,res)=>{
         image:user.image,
         posts:user.posts,
         projects:user.projects,
+        firms:user.firms,
     }
         ));
 
