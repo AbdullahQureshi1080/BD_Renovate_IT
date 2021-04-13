@@ -192,6 +192,8 @@ const noteValidation = (data) => {
     email: Joi.string().min(6).required().email(),
     firmId: Joi.string().required(),
     note: Joi.string(),
+    images:Joi.array(),
+    documents:Joi.array(),
   });
   const note = noteValidationScheme.validate(data);
   return note;
@@ -214,6 +216,16 @@ const deleteNoteValidation = (data) => {
   });
   const note = deleteNoteValidationScheme.validate(data);
   return note;
+};
+
+const deleteFirmValidation = (data) => {
+  const firmValidationScheme = Joi.object({
+    email: Joi.string().min(6).required().email(),
+    firmId: Joi.required(),
+    members:Joi.array().required,
+  });
+  const firm = firmValidationScheme.validate(data);
+  return firm;
 };
 
 
@@ -239,3 +251,4 @@ module.exports.newFirmValidation = newFirmValidation;
 module.exports.noteValidation = noteValidation;
 module.exports.getNoteValidation = getNoteValidation;
 module.exports.deleteNoteValidation = deleteNoteValidation;
+module.exports.deleteFirmValidation = deleteFirmValidation;
