@@ -6,6 +6,7 @@ const {
   getNoteValidation,
   deleteNoteValidation,
   deleteFirmValidation,
+  updateNoteValidation,
 } = require("../middleware/validation");
 const User = require("../models/User");
 const Firm = require("../models/Firm");
@@ -211,6 +212,20 @@ router.post("/deleteFirm", async (req, res) => {
         console.log("Updated Docs : ", docs);
       }
     });
+    await User.updateOne(
+      {email: req.body.email.toLowerCase()},
+      {
+        $pull: {firms: {id: mongoose.Types.ObjectId(req.body.firmId)}
+        },
+      },
+      function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Updated Docs : ", docs);
+        }
+      }
+    );
     for(var i=0; i<req.body.members.length; i++){
       // if(req.body.members[i] === null) continue;
       await User.updateOne(
@@ -232,6 +247,42 @@ router.post("/deleteFirm", async (req, res) => {
     res.send("User does not exist");
   }
 });
+
+
+router.post("/updateNote", async (req, res) => {
+  const { error } = updateNoteValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  console.log(req.body);
+  await Firm.updateOne(
+    { 'notes.id' : mongoose.Types.ObjectId(req.body.noteId)},
+    {
+      $set: {
+            'notes.$.note':req.body.note,
+            'notes.$.images':req.body.images,
+            'notes.$.documents':req.body.documents,
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedFirm = await Firm.findOne({
+      _id: req.body.firmId,
+    });
+    // console.log(updatedNote);
+    res.status(201).send(updatedFirm.notes);
+  } catch (err) {
+    res.status(400).send("An Error Occured", err);
+  }
+});
+ 
+
+
 // Updating a Firm
  
 // router.post("/addMember", async (req, res) => {
