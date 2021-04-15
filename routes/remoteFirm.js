@@ -271,11 +271,11 @@ router.post("/updateNote", async (req, res) => {
     }
   );
   try {
-    const updatedFirm = await Firm.findOne({
+    const firm = await Firm.findOne({
       _id: req.body.firmId,
     });
     // console.log(updatedNote);
-    res.status(201).send(updatedFirm.notes);
+    res.status(201).send(firm.notes);
   } catch (err) {
     res.status(400).send("An Error Occured", err);
   }
