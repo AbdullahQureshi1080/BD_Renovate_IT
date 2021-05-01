@@ -30,7 +30,9 @@ const profileRoute = require("./routes/profile");
 const postRoute = require("./routes/posts");
 const projectRoute = require("./routes/projects");
 const chatRoute = require("./routes/chats");
-const remoteFirm = require("./routes/remoteFirm");
+const remoteFirmRoute = require("./routes/remoteFirm");
+const shopRoute = require("./routes/shop");
+
 
 // --------- Middlewares
 app.use(express.json());
@@ -47,8 +49,8 @@ app.use("/api/profile", profileRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/projects", projectRoute);
 app.use("/api/chats", chatRoute);
-app.use("/api/remoteFirm", remoteFirm);
-
+app.use("/api/remoteFirm", remoteFirmRoute);
+app.use("/api/shop", shopRoute);
 
 // app.use("/api/cloudStorage", cloudStorage);
  

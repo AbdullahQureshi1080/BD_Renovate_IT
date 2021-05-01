@@ -4,7 +4,7 @@
   "description": "\"Backend for RenovateIt\"",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "engines": {"node": "14.15.1"},
   "author": "Abdullah Qureshi",

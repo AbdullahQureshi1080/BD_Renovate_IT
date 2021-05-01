@@ -242,6 +242,42 @@ const deleteFirmValidation = (data) => {
 };
 
 
+// Shop Validations
+const registerShopValidation = (data) => {
+  const shopValidationSchema = Joi.object({
+    shopName: Joi.string().min(3).required(),
+    phoneNumber: Joi.string().min(3).required(),
+    email: Joi.string().min(6).required().email(),
+    password: Joi.string().min(6).required(),
+  });
+  const validatedShop = shopValidationSchema.validate(data);
+  return validatedShop;
+};
+ 
+const loginShopValidation = (data) => {
+  const shopValidationSchema = Joi.object({
+    email: Joi.string().min(6).required().email(),
+    password: Joi.string().min(6).required(),
+  });
+  const validatedShop = shopValidationSchema.validate(data);
+  return validatedShop;
+};
+
+// Add Products to Shop
+const addProductValidation = (data) => {
+  const addProductValidationSchema = Joi.object({
+    email: Joi.string().min(6).required().email(),
+    productName: Joi.string().required(),
+    productDescription: Joi.string().required(),
+    productPrice: Joi.number().required(),
+    productImage: Joi.string().required(),
+    productCategory: Joi.string().required(),
+  });
+  const validatedShop = addProductValidationSchema.validate(data);
+  return validatedShop;
+};
+
+
 
 
 // Exports
@@ -266,3 +302,6 @@ module.exports.updateNoteValidation = updateNoteValidation;
 module.exports.getNoteValidation = getNoteValidation;
 module.exports.deleteNoteValidation = deleteNoteValidation;
 module.exports.deleteFirmValidation = deleteFirmValidation;
+module.exports.registerShopValidation = registerShopValidation;
+module.exports.loginShopValidation = loginShopValidation;
+module.exports.addProductValidation = addProductValidation;
