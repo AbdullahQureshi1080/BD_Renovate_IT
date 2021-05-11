@@ -293,11 +293,11 @@ const updateShopProfileImage = (data) => {
 };
 
 // Get Shop Data
-const getshopDataValidation = (data) => {
-  const getshopDataValidationSchema = Joi.object({
+const getShopDataValidation = (data) => {
+  const getShopDataValidationSchema = Joi.object({
     shopId: Joi.string().min(6).required(),
   });
-  const validatedShop = getshopDataValidationSchema.validate(data);
+  const validatedShop = getShopDataValidationSchema.validate(data);
   return validatedShop;
 };
 
@@ -312,14 +312,58 @@ const updateShopDataValidation = (data) => {
 };
 
 // Get Shop Products
-const getshopProductsValidation = (data) => {
-  const getshopProductsValidationSchema = Joi.object({
+const getShopProductsValidation = (data) => {
+  const getShopProductsValidationSchema = Joi.object({
     shopId: Joi.string().min(6).required(),
   });
-  const validatedShop = getshopProductsValidationSchema.validate(data);
+  const validatedShop = getShopProductsValidationSchema.validate(data);
   return validatedShop;
 };
 
+// Get Store Products
+const getStoreDataValidation = (data) => {
+  const getStoreDataValidationSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+  });
+  const validatedStore = getStoreDataValidationSchema.validate(data);
+  return validatedStore;
+};
+
+// Get Store Products - Specific Category
+const getStoreDataSpecificCategoryValidation = (data) => {
+  const getStoreDataSpecificCategoryValidationSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+    category: Joi.string().required(),
+  });
+  const validatedStore =
+    getStoreDataSpecificCategoryValidationSchema.validate(data);
+  return validatedStore;
+};
+
+// Place  Order Store
+const storePlaceOrderValidation = (data) => {
+  const storePlaceOrderValidationSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+    shopId: Joi.string().min(6).required(),
+    products: Joi.array().required(),
+    paymentType: Joi.string().required(),
+    totalOrderPrice: Joi.string().required(),
+    deliveryDetails: Joi.object().required(),
+  });
+  const validatedStore = storePlaceOrderValidationSchema.validate(data);
+  return validatedStore;
+};
+
+// Confirm Order Shop
+const confirmShopOrderValidation = (data) => {
+  const confirmShopOrderValidationSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+    shopId: Joi.string().min(6).required(),
+    orderId: Joi.string().min(6).required(),
+  });
+  const validatedShop = confirmShopOrderValidationSchema.validate(data);
+  return validatedShop;
+};
 // Exports
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
@@ -346,7 +390,12 @@ module.exports.registerShopValidation = registerShopValidation;
 module.exports.loginShopValidation = loginShopValidation;
 module.exports.addProductValidation = addProductValidation;
 module.exports.updateShopProfileImage = updateShopProfileImage;
-module.exports.getshopDataValidation = getshopDataValidation;
+module.exports.getShopDataValidation = getShopDataValidation;
 module.exports.updateShopDataValidation = updateShopDataValidation;
-module.exports.getshopProductsValidation = getshopProductsValidation;
+module.exports.getShopProductsValidation = getShopProductsValidation;
 module.exports.deleteProductValidation = deleteProductValidation;
+module.exports.getStoreDataValidation = getStoreDataValidation;
+module.exports.getStoreDataSpecificCategoryValidation =
+  getStoreDataSpecificCategoryValidation;
+module.exports.storePlaceOrderValidation = storePlaceOrderValidation;
+module.exports.confirmShopOrderValidation = confirmShopOrderValidation;

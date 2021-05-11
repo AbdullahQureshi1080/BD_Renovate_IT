@@ -5,14 +5,17 @@ const {
   loginShopValidation,
   addProductValidation,
   updateShopProfileImage,
-  getshopDataValidation,
+  getShopDataValidation,
   updateShopDataValidation,
-  getshopProductsValidation,
+  getShopProductsValidation,
   deleteProductValidation,
+  confirmShopOrderValidation,
 } = require("../middleware/validation");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
 const Product = require("../models/Product");
+const Order = require("../models/Order");
+const User = require("../models/User");
 var mongoose = require("mongoose");
 
 // Register Route
@@ -201,7 +204,7 @@ router.post("/updateProfileImage", async (req, res) => {
 //  Get Shop Data
 router.post("/getShopData", async (req, res) => {
   // console.log(req.body)
-  const { error } = getshopDataValidation(req.body);
+  const { error } = getShopDataValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const shop = await Shop.findOne({
     _id: req.body.shopId,
@@ -224,6 +227,7 @@ router.post("/getShopData", async (req, res) => {
   res.status(201).send(shopData);
 });
 
+//  Update Shop Data
 router.post("/updateShopData", async (req, res) => {
   const { error } = updateShopDataValidation(req.body);
   // console.log(req.body);
@@ -251,17 +255,17 @@ router.post("/updateShopData", async (req, res) => {
       _id: req.body.shopId,
     });
     const sendData = {
-      _id: shop._id,
-      shopName: shop.shopName,
-      phoneNumber: shop.phoneNumber,
-      email: shop.email,
-      about: shop.about,
-      location: shop.location,
-      image: shop.image,
-      shopCategory: shop.shopCategory,
-      products: shop.products,
-      orders: shop.orders,
-      createdAt: shop.date,
+      _id: updatedShop._id,
+      shopName: updatedShop.shopName,
+      phoneNumber: updatedShop.phoneNumber,
+      email: updatedShop.email,
+      about: updatedShop.about,
+      location: updatedShop.location,
+      image: updatedShop.image,
+      shopCategory: updatedShop.shopCategory,
+      products: updatedShop.products,
+      orders: updatedShop.orders,
+      createdAt: updatedShop.date,
     };
     // console.log(sendData);
     res.status(201).send(sendData);
@@ -270,9 +274,10 @@ router.post("/updateShopData", async (req, res) => {
   }
 });
 
+// Get Shop Products
 router.post("/getShopProducts", async (req, res) => {
   // console.log(req.body)
-  const { error } = getshopProductsValidation(req.body);
+  const { error } = getShopProductsValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const shop = await Shop.findOne({
     _id: req.body.shopId,
@@ -289,6 +294,45 @@ router.post("/getShopProducts", async (req, res) => {
   console.log("Shop Products", shopProducts);
   // console.log(userPosts);
   res.status(201).send(shopProducts);
+});
+
+// Confirm Shop Order
+router.post("/confirmOrder", async (req, res) => {
+  // console.log(req.body)
+  const { error } = confirmShopOrderValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  const shop = await Shop.findOne({
+    _id: req.body.shopId,
+  });
+  if (!shop) res.status(400).send("Shop does not exist");
+  // Logic for Confirm Order
+  await Order.updateOne(
+    { _id: req.body.orderId },
+    {
+      $set: {
+        orderStatus: req.body.orderStatus,
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedShop = await Shop.findOne({
+      _id: req.body.shopId,
+    });
+    const updatedOrders = {
+      orders: updatedShop.orders,
+    };
+    // console.log(sendData);
+    res.status(201).send(updatedOrders);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 module.exports = router;
