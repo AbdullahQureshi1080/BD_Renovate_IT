@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 // const {postScheme} = require('./Post');
 
-
- const userScheme = new mongoose.Schema({
- 
+const userScheme = new mongoose.Schema({
   firstname: {
     type: String,
     required: true,
@@ -49,10 +47,11 @@ const mongoose = require("mongoose");
     type: Date,
     default: Date.now,
   },
-  posts:[],
-  projects:[],
-  chats:[],
-  firms:[],
+  posts: [],
+  projects: [],
+  chats: [],
+  firms: [],
+  storeOrders: [],
 });
- 
+
 module.exports = mongoose.model("User", userScheme);
