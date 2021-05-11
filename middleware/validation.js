@@ -1,17 +1,16 @@
 // Validation with JOI
 const Joi = require("joi");
 // const { model } = require("mongoose");
- 
 
-// General Validations 
+// General Validations
 
-const emailValidation = (data)=>{
+const emailValidation = (data) => {
   const emailValidationSchema = Joi.object({
-    email:Joi.string().min(6).required().email(),
-  })
+    email: Joi.string().min(6).required().email(),
+  });
   const emailValidation = emailValidationSchema.validate(data);
   return emailValidation;
-}
+};
 
 // Auth Validations ----------------------------------
 const registerValidation = (data) => {
@@ -25,7 +24,7 @@ const registerValidation = (data) => {
   const validatedUser = userValidationSchema.validate(data);
   return validatedUser;
 };
- 
+
 const loginValidation = (data) => {
   const userValidationSchema = Joi.object({
     email: Joi.string().min(6).required().email(),
@@ -34,7 +33,7 @@ const loginValidation = (data) => {
   const validatedUser = userValidationSchema.validate(data);
   return validatedUser;
 };
- 
+
 // Profile Validations ----------------------------------
 const updateValidation = (data) => {
   const userValidationSchema = Joi.object({
@@ -44,13 +43,13 @@ const updateValidation = (data) => {
     jobtitle: Joi.string().min(6),
     about: Joi.string().min(15),
     location: Joi.string().min(5),
-    jobcategory:Joi.string().required(),
-    image:Joi.string(),
+    jobcategory: Joi.string().required(),
+    image: Joi.string(),
   });
   const validatedUser = userValidationSchema.validate(data);
   return validatedUser;
 };
- 
+
 const getValidation = (data) => {
   const userValidationSchema = Joi.object({
     email: Joi.string().min(6).required().email(),
@@ -58,7 +57,7 @@ const getValidation = (data) => {
   const getValidation = userValidationSchema.validate(data);
   return getValidation;
 };
- 
+
 // Post Validations ----------------------------------
 const newPostValidation = (data) => {
   const postValidationScheme = Joi.object({
@@ -72,7 +71,7 @@ const newPostValidation = (data) => {
   const post = postValidationScheme.validate(data);
   return post;
 };
- 
+
 const updatePostValidation = (data) => {
   const postValidationScheme = Joi.object({
     // creator:Joi.string().required(),
@@ -87,7 +86,7 @@ const updatePostValidation = (data) => {
   const post = postValidationScheme.validate(data);
   return post;
 };
- 
+
 // deletePostValidation;
 const deletePostValidation = (data) => {
   const postValidationScheme = Joi.object({
@@ -105,24 +104,24 @@ const newProjectValidation = (data) => {
     title: Joi.string().min(5).required(),
     description: Joi.string(),
     category: Joi.string(),
-    data:Joi.object(),
+    data: Joi.object(),
   });
   const project = projectValidationScheme.validate(data);
   return project;
 };
- 
+
 const updateProjectValidation = (data) => {
   const projectValidationScheme = Joi.object({
     id: Joi.required(),
     title: Joi.string().min(5).required(),
     description: Joi.string(),
     category: Joi.string(),
-    data:Joi.object(),
+    data: Joi.object(),
   });
   const project = projectValidationScheme.validate(data);
   return project;
 };
- 
+
 // deleteProjectValidation;
 const deleteProjectValidation = (data) => {
   const projectValidationScheme = Joi.object({
@@ -137,7 +136,7 @@ const commentValidation = (data) => {
   const commentValidationScheme = Joi.object({
     userId: Joi.string().required(),
     projectId: Joi.string().required(),
-    value:Joi.string(),
+    value: Joi.string(),
   });
   const comment = commentValidationScheme.validate(data);
   return comment;
@@ -151,17 +150,16 @@ const getCommentValidation = (data) => {
   const comment = getCommentValidationScheme.validate(data);
   return comment;
 };
- 
+
 const likeValidation = (data) => {
   const likeValidationScheme = Joi.object({
     userId: Joi.string().required(),
     projectId: Joi.required(),
-    value:Joi.number(),
+    value: Joi.number(),
   });
   const like = likeValidationScheme.validate(data);
   return like;
 };
-
 
 // ------Chat Validations
 const chatValidation = (data) => {
@@ -173,7 +171,6 @@ const chatValidation = (data) => {
   const chat = chatValidationScheme.validate(data);
   return chat;
 };
-
 
 // ---Firm Validations
 const newFirmValidation = (data) => {
@@ -192,8 +189,8 @@ const noteValidation = (data) => {
     email: Joi.string().min(6).required().email(),
     firmId: Joi.string().required(),
     note: Joi.string(),
-    images:Joi.array(),
-    documents:Joi.array(),
+    images: Joi.array(),
+    documents: Joi.array(),
   });
   const note = noteValidationScheme.validate(data);
   return note;
@@ -204,13 +201,12 @@ const updateNoteValidation = (data) => {
     noteId: Joi.string().required(),
     firmId: Joi.string().required(),
     note: Joi.string(),
-    images:Joi.array(),
-    documents:Joi.array(),
+    images: Joi.array(),
+    documents: Joi.array(),
   });
   const note = noteValidationScheme.validate(data);
   return note;
 };
-
 
 const getNoteValidation = (data) => {
   const getNoteValidationScheme = Joi.object({
@@ -223,7 +219,7 @@ const getNoteValidation = (data) => {
 
 const deleteNoteValidation = (data) => {
   const deleteNoteValidationScheme = Joi.object({
-    email :Joi.string().min(6).required().email(),
+    email: Joi.string().min(6).required().email(),
     firmId: Joi.string().required(),
     noteId: Joi.string().required(),
   });
@@ -235,12 +231,11 @@ const deleteFirmValidation = (data) => {
   const deleteFirmValidationScheme = Joi.object({
     email: Joi.string().min(6).required().email(),
     firmId: Joi.required(),
-    members:Joi.array().required(),
+    members: Joi.array().required(),
   });
   const firm = deleteFirmValidationScheme.validate(data);
   return firm;
 };
-
 
 // Shop Validations
 const registerShopValidation = (data) => {
@@ -253,7 +248,7 @@ const registerShopValidation = (data) => {
   const validatedShop = shopValidationSchema.validate(data);
   return validatedShop;
 };
- 
+
 const loginShopValidation = (data) => {
   const shopValidationSchema = Joi.object({
     email: Joi.string().min(6).required().email(),
@@ -277,8 +272,53 @@ const addProductValidation = (data) => {
   return validatedShop;
 };
 
+// Delete Product from  Shop
+const deleteProductValidation = (data) => {
+  const deleteProductValidationSchema = Joi.object({
+    shopId: Joi.string().min(6).required(),
+    productId: Joi.string().required(),
+  });
+  const validatedShop = deleteProductValidationSchema.validate(data);
+  return validatedShop;
+};
 
+// Update Profile Image shop
+const updateShopProfileImage = (data) => {
+  const updateShopProfileImageSchema = Joi.object({
+    shopId: Joi.string().min(6).required(),
+    image: Joi.string().required(),
+  });
+  const validatedShop = updateShopProfileImageSchema.validate(data);
+  return validatedShop;
+};
 
+// Get Shop Data
+const getshopDataValidation = (data) => {
+  const getshopDataValidationSchema = Joi.object({
+    shopId: Joi.string().min(6).required(),
+  });
+  const validatedShop = getshopDataValidationSchema.validate(data);
+  return validatedShop;
+};
+
+// Update Shop Data
+const updateShopDataValidation = (data) => {
+  const updateShopDataValidationSchema = Joi.object({
+    shopId: Joi.string().min(6).required(),
+    data: Joi.object().required(),
+  });
+  const validatedShop = updateShopDataValidationSchema.validate(data);
+  return validatedShop;
+};
+
+// Get Shop Products
+const getshopProductsValidation = (data) => {
+  const getshopProductsValidationSchema = Joi.object({
+    shopId: Joi.string().min(6).required(),
+  });
+  const validatedShop = getshopProductsValidationSchema.validate(data);
+  return validatedShop;
+};
 
 // Exports
 module.exports.registerValidation = registerValidation;
@@ -305,3 +345,8 @@ module.exports.deleteFirmValidation = deleteFirmValidation;
 module.exports.registerShopValidation = registerShopValidation;
 module.exports.loginShopValidation = loginShopValidation;
 module.exports.addProductValidation = addProductValidation;
+module.exports.updateShopProfileImage = updateShopProfileImage;
+module.exports.getshopDataValidation = getshopDataValidation;
+module.exports.updateShopDataValidation = updateShopDataValidation;
+module.exports.getshopProductsValidation = getshopProductsValidation;
+module.exports.deleteProductValidation = deleteProductValidation;
