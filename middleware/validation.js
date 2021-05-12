@@ -154,8 +154,8 @@ const getCommentValidation = (data) => {
 const likeValidation = (data) => {
   const likeValidationScheme = Joi.object({
     userId: Joi.string().required(),
-    projectId: Joi.required(),
-    value: Joi.number(),
+    projectId: Joi.string().required(),
+    liked: Joi.boolean().required(),
   });
   const like = likeValidationScheme.validate(data);
   return like;
