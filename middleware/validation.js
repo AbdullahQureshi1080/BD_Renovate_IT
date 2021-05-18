@@ -346,8 +346,8 @@ const storePlaceOrderValidation = (data) => {
     userId: Joi.string().min(6).required(),
     shopId: Joi.string().min(6).required(),
     products: Joi.array().required(),
-    paymentType: Joi.string().required(),
-    totalOrderPrice: Joi.string().required(),
+    // paymentType: Joi.string().required(),
+    totalOrderCost: Joi.number().required(),
     deliveryDetails: Joi.object().required(),
   });
   const validatedStore = storePlaceOrderValidationSchema.validate(data);

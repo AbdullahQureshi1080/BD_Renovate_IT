@@ -30,7 +30,7 @@ const orderScheme = new mongoose.Schema({
 
   orderStatus: {
     type: String,
-    default: "Awaiting Confirmation  ",
+    default: "Awaiting Confirmation",
   },
   date: {
     type: Date,

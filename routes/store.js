@@ -66,22 +66,21 @@ router.post("/getShopData", async (req, res) => {
 
 //  Place Order
 router.post("/placeOrder", async (req, res) => {
-  // console.log(req.body)
+  console.log(req.body);
   const { error } = storePlaceOrderValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const user = await User.findOne({ _id: req.body.userId });
   const shop = await Shop.findOne({ _id: req.body.shopId });
-  if (!user && !shop)
-    res.status(400).send("Error placing an order try again later");
+  if (!user) res.status(400).send("Error placing an order try again later");
   //    For Order confirmation
   const newOrder = new Order({
-    orderName: req.body.orderName,
+    orderName: user.firstname,
     buyerId: req.body.userId,
     shopId: req.body.shopId,
     totalOrderCost: req.body.totalOrderCost,
     products: req.body.products,
     deliveryDetails: req.body.deliveryDetails,
-    paymentType: req.body.paymentType,
+    paymentType: "Cash on delivery",
   });
 
   try {
