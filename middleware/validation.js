@@ -97,6 +97,56 @@ const deletePostValidation = (data) => {
   return post;
 };
 
+// Offer Bid Validation
+const offerBidValidation = (data) => {
+  const offerBidValidationScheme = Joi.object({
+    bidderId: Joi.string().min(6).required(),
+    postId: Joi.string().min(6).required(),
+    posterId: Joi.string().min(6).required(),
+    message: Joi.string().min(6).required(),
+    bidAmount: Joi.number().required(),
+  });
+  const bid = offerBidValidationScheme.validate(data);
+  return bid;
+};
+
+const acceptBidValidation = (data) => {
+  const acceptBidValidationScheme = Joi.object({
+    bidId: Joi.string().min(6).required(),
+    postId: Joi.string().min(6).required(),
+  });
+  const bid = acceptBidValidationScheme.validate(data);
+  return bid;
+};
+
+const rejectBidValidation = (data) => {
+  const rejectBidValidationScheme = Joi.object({
+    bidId: Joi.string().min(6).required(),
+    postId: Joi.string().min(6).required(),
+  });
+  const bid = rejectBidValidationScheme.validate(data);
+  return bid;
+};
+
+const bidValidation = (data) => {
+  const bidValidationScheme = Joi.object({
+    // bidId: Joi.string().min(6).required(),
+    postId: Joi.string().min(6).required(),
+  });
+  const bid = bidValidationScheme.validate(data);
+  return bid;
+};
+
+const userBidValidation = (data) => {
+  const userBidValidationScheme = Joi.object({
+    userId: Joi.string().min(6).required(),
+    postId: Joi.string().min(6).required(),
+    bidId: Joi.string().min(6).required(),
+  });
+  const bid = userBidValidationScheme.validate(data);
+  return bid;
+};
+
 // Project Validations ----------------------------------
 const newProjectValidation = (data) => {
   const projectValidationScheme = Joi.object({
@@ -423,3 +473,8 @@ module.exports.storePlaceOrderValidation = storePlaceOrderValidation;
 module.exports.confirmShopOrderValidation = confirmShopOrderValidation;
 module.exports.getUserOrdersValidaion = getUserOrdersValidaion;
 module.exports.storeCancelOrderValidation = storeCancelOrderValidation;
+module.exports.offerBidValidation = offerBidValidation;
+module.exports.acceptBidValidation = acceptBidValidation;
+module.exports.rejectBidValidation = rejectBidValidation;
+module.exports.bidValidation = bidValidation;
+module.exports.userBidValidation = userBidValidation;

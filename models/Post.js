@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
- 
+
 const postScheme = new mongoose.Schema({
   id: {
     type: mongoose.Types.ObjectId,
@@ -15,21 +15,21 @@ const postScheme = new mongoose.Schema({
   },
   images: [String],
   documents: [String],
+  bids: [],
   date: {
     type: Date,
     default: Date.now,
   },
-  budget:{
-      type:String,
+  budget: {
+    type: String,
   },
- creator:{
-      type:String,
-      required:true,
+  creator: {
+    type: String,
+    required: true,
   },
-  creatorImage:{
-      type:String,
-  }
+  creatorImage: {
+    type: String,
+  },
 });
- 
-// module.exports.postScheme = postScheme;
+
 module.exports = mongoose.model("Post", postScheme);
