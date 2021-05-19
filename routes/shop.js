@@ -289,9 +289,9 @@ router.post("/getShopProducts", async (req, res) => {
   const shopProducts = allProducts.filter(({ _id }) =>
     productIds.includes(_id)
   );
-  console.log("Product Ids", productIds);
-  console.log("All Products", allProducts);
-  console.log("Shop Products", shopProducts);
+  // console.log("Product Ids", productIds);
+  // console.log("All Products", allProducts);
+  // console.log("Shop Products", shopProducts);
   // console.log(userPosts);
   res.status(201).send(shopProducts);
 });

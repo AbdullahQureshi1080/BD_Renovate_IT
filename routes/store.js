@@ -4,6 +4,8 @@ const {
   getStoreDataSpecificCategoryValidation,
   getShopDataValidation,
   storePlaceOrderValidation,
+  getUserOrdersValidaion,
+  storeCancelOrderValidation,
 } = require("../middleware/validation");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
@@ -66,7 +68,7 @@ router.post("/getShopData", async (req, res) => {
 
 //  Place Order
 router.post("/placeOrder", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { error } = storePlaceOrderValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const user = await User.findOne({ _id: req.body.userId });
@@ -125,6 +127,61 @@ router.post("/placeOrder", async (req, res) => {
   } catch (err) {
     res.status(400).send("An Error Occured", err);
   }
+});
+
+//  Cancel Order
+router.post("/cancelOrder", async (req, res) => {
+  // console.log(req.body);
+  const { error } = storeCancelOrderValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  const user = await User.findOne({ _id: req.body.userId });
+  // const shop = await Shop.findOne({ _id: req.body.shopId });
+  if (!user) res.status(400).send("Error placing an order try again later");
+  await Order.updateOne(
+    { _id: req.body.orderId },
+    {
+      $set: {
+        orderStatus: "Canceled",
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedOrder = await Order.findOne({
+      _id: req.body.orderId,
+    });
+    console.log(updatedOrder);
+    res.status(201).send(updatedOrder);
+  } catch (err) {
+    res.status(400).send("An Error Occured", err);
+  }
+});
+
+// Get User Orders
+
+router.post("/getUserOrders", async (req, res) => {
+  // console.log(req.body);
+  const { error } = getUserOrdersValidaion(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  const user = await User.findOne({
+    _id: req.body.userId,
+  });
+  if (!user) res.status(400).send("User does not exist");
+  const orders = user.storeOrders;
+  const orderIds = orders.map(({ id }) => id);
+  const allOrders = await Order.find();
+  const userOrders = allOrders.filter(({ _id }) => orderIds.includes(_id));
+  // console.log("Order Ids", orderIds);
+  // console.log("All Orders", allOrders);
+  // console.log("User Orders", userOrders);
+  // console.log(userPosts);
+  res.status(201).send(userOrders);
 });
 
 module.exports = router;

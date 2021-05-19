@@ -364,6 +364,28 @@ const confirmShopOrderValidation = (data) => {
   const validatedShop = confirmShopOrderValidationSchema.validate(data);
   return validatedShop;
 };
+
+// Get Order Validation
+
+const getUserOrdersValidaion = (data) => {
+  const getUserOrdersValidaionSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+  });
+  const validatedUser = getUserOrdersValidaionSchema.validate(data);
+  return validatedUser;
+};
+
+// Cancel Order Validation
+
+const storeCancelOrderValidation = (data) => {
+  const storeCancelOrderValidationSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+    orderId: Joi.string().min(6).required(),
+  });
+  const validatedOrder = storeCancelOrderValidationSchema.validate(data);
+  return validatedOrder;
+};
+
 // Exports
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
@@ -399,3 +421,5 @@ module.exports.getStoreDataSpecificCategoryValidation =
   getStoreDataSpecificCategoryValidation;
 module.exports.storePlaceOrderValidation = storePlaceOrderValidation;
 module.exports.confirmShopOrderValidation = confirmShopOrderValidation;
+module.exports.getUserOrdersValidaion = getUserOrdersValidaion;
+module.exports.storeCancelOrderValidation = storeCancelOrderValidation;
