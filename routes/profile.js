@@ -2,7 +2,6 @@ const router = require("express").Router();
 const User = require("../models/User.js");
 const { updateValidation, getValidation } = require("../middleware/validation");
 
-
 router.post("/updateProfile", async (req, res) => {
   const { error } = updateValidation(req.body);
   // console.log(req.body);
@@ -17,7 +16,7 @@ router.post("/updateProfile", async (req, res) => {
         about: req.body.about,
         jobtitle: req.body.jobtitle,
         jobcategory: req.body.jobcategory,
-        image:req.body.image,
+        image: req.body.image,
         // posts:req.body.posts,
       },
     },
@@ -34,17 +33,17 @@ router.post("/updateProfile", async (req, res) => {
       email: req.body.email.toLowerCase(),
     });
     const sendData = {
-      _id:updatedUser._id,
+      _id: updatedUser._id,
       firstname: updatedUser.firstname,
       lastname: updatedUser.lastname,
       email: updatedUser.email,
       about: updatedUser.about,
       location: updatedUser.location,
       jobtitle: updatedUser.jobtitle,
-      jobcategory:updatedUser.jobcategory,
+      jobcategory: updatedUser.jobcategory,
       image: updatedUser.image,
-      chats:updatedUser.chats,
-      firms:updatedUser.firms,
+      chats: updatedUser.chats,
+      firms: updatedUser.firms,
     };
     // console.log(sendData);
     res.status(201).send(sendData);
@@ -52,30 +51,30 @@ router.post("/updateProfile", async (req, res) => {
     res.status(400).send(err);
   }
 });
- 
+
 router.post("/getProfile", async (req, res) => {
   const { error } = getValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const user = await User.findOne({
-    email: req.body.email.toLowerCase(),
+    _id: req.body.userId,
   });
   if (!user) res.status(400).send("User does not exist");
- 
+
   const sendData = {
-    _id:user._id,
+    _id: user._id,
     firstname: user.firstname,
     lastname: user.lastname,
     email: user.email,
     about: user.about,
     location: user.location,
     jobtitle: user.jobtitle,
-    jobcategory:user.jobcategory,
+    jobcategory: user.jobcategory,
     image: user.image,
-    chats:user.chats,
-    firms:user.firms,
+    chats: user.chats,
+    firms: user.firms,
     // posts:user.posts,
   };
   res.status(201).send(sendData);
 });
- 
+
 module.exports = router;

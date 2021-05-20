@@ -342,7 +342,6 @@ router.post("/deletePost", async (req, res) => {
     await User.updateOne(
       { email: req.body.email },
       {
-        // $pull: { posts:  {_id:mongoose.Types.ObjectId(req.body.id)}} ,
         $pull: { posts: { id: mongoose.Types.ObjectId(req.body.id) } },
       },
 
@@ -375,7 +374,7 @@ router.post("/getUserPosts", async (req, res) => {
     email: req.body.email.toLowerCase(),
   });
   if (!user) res.status(400).send("User does not exist");
-  const userPosts = user.posts;
+  const userPosts = user.posts.map(({ id }) => id);
   // console.log(userPosts);
   res.status(201).send(userPosts);
 });

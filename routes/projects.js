@@ -146,7 +146,7 @@ router.post("/getUserProjects", async (req, res) => {
     email: req.body.email.toLowerCase(),
   });
   if (!user) res.status(400).send("User does not exist");
-  const userProjects = user.projects;
+  const userProjects = user.projects.map(({ id }) => id);
   // console.log(userprojects);
   res.status(201).send(userProjects);
 });

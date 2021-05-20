@@ -52,7 +52,7 @@ const updateValidation = (data) => {
 
 const getValidation = (data) => {
   const userValidationSchema = Joi.object({
-    email: Joi.string().min(6).required().email(),
+    userId: Joi.string().min(6).required(),
   });
   const getValidation = userValidationSchema.validate(data);
   return getValidation;
