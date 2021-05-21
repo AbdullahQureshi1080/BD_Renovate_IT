@@ -102,7 +102,6 @@ const offerBidValidation = (data) => {
   const offerBidValidationScheme = Joi.object({
     bidderId: Joi.string().min(6).required(),
     postId: Joi.string().min(6).required(),
-    posterId: Joi.string().min(6).required(),
     message: Joi.string().min(6).required(),
     bidAmount: Joi.number().required(),
   });
@@ -130,7 +129,6 @@ const rejectBidValidation = (data) => {
 
 const bidValidation = (data) => {
   const bidValidationScheme = Joi.object({
-    // bidId: Joi.string().min(6).required(),
     postId: Joi.string().min(6).required(),
   });
   const bid = bidValidationScheme.validate(data);

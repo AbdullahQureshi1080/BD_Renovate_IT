@@ -100,13 +100,12 @@ router.post("/updatePost", async (req, res) => {
 // Biding on the post
 
 router.post("/offerBid", async (req, res) => {
+  console.log(req.body);
   const { error } = offerBidValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-  console.log(req.body);
   const newBid = new Bid({
     bidderId: req.body.bidderId,
     message: req.body.message,
-    posterId: req.body.posterId,
     bidAmount: req.body.bidAmount,
   });
   await Post.updateOne(
