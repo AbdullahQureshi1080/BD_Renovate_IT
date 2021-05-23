@@ -7,9 +7,12 @@ const {
   updateShopProfileImage,
   getShopDataValidation,
   updateShopDataValidation,
+  updateProductValidation,
   getShopProductsValidation,
   deleteProductValidation,
+  getShopOrdersValidation,
   confirmShopOrderValidation,
+  getBuyerInfoValidation,
 } = require("../middleware/validation");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
@@ -168,6 +171,40 @@ router.post("/deleteProduct", async (req, res) => {
   }
 });
 
+//  Update Product
+router.post("/updateProduct", async (req, res) => {
+  console.log(req.body);
+  const { error } = updateProductValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  await Product.updateOne(
+    { _id: req.body.productId },
+    {
+      $set: {
+        productName: req.body.productName,
+        productDescription: req.body.productDescription,
+        productCategory: req.body.productCategory,
+        productPrice: req.body.productPrice,
+        productImage: req.body.productImage,
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedProduct = await Product.findOne({
+      _id: req.body.productId,
+    });
+    res.status(201).send(updatedProduct);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
 // Updating Profile Image
 
 router.post("/updateProfileImage", async (req, res) => {
@@ -296,21 +333,51 @@ router.post("/getShopProducts", async (req, res) => {
   res.status(201).send(shopProducts);
 });
 
-// Confirm Shop Order
-router.post("/confirmOrder", async (req, res) => {
+// Get Shop Orders
+router.post("/getShopOrders", async (req, res) => {
   // console.log(req.body)
-  const { error } = confirmShopOrderValidation(req.body);
+  const { error } = getShopOrdersValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const shop = await Shop.findOne({
     _id: req.body.shopId,
   });
   if (!shop) res.status(400).send("Shop does not exist");
-  // Logic for Confirm Order
+  const allOrders = await Order.find();
+  const shopOrders = allOrders.filter((order) => {
+    return (order.shopId = shop._id);
+  });
+  res.status(201).send(shopOrders);
+});
+
+// Get Shop Orders
+router.post("/getBuyerInfo", async (req, res) => {
+  // console.log(req.body)
+  const { error } = getBuyerInfoValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  const user = await User.findOne({
+    _id: req.body.buyerId,
+  });
+  if (!user) res.status(400).send("User does not exist");
+  const userData = {
+    _id: user._id,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    email: user.email,
+    image: user.image,
+  };
+  res.status(201).send(userData);
+});
+
+// Confirm Shop Order
+router.post("/acceptOrder", async (req, res) => {
+  // console.log(req.body)
+  const { error } = confirmShopOrderValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
   await Order.updateOne(
     { _id: req.body.orderId },
     {
       $set: {
-        orderStatus: req.body.orderStatus,
+        orderStatus: "Confirmed",
       },
     },
     function (err, docs) {
@@ -322,14 +389,40 @@ router.post("/confirmOrder", async (req, res) => {
     }
   );
   try {
-    const updatedShop = await Shop.findOne({
-      _id: req.body.shopId,
+    const updatedOrder = await Order.findOne({
+      _id: req.body.orderId,
     });
-    const updatedOrders = {
-      orders: updatedShop.orders,
-    };
-    // console.log(sendData);
-    res.status(201).send(updatedOrders);
+    res.status(201).send(updatedOrder);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// Confirm Shop Order
+router.post("/rejectOrder", async (req, res) => {
+  // console.log(req.body)
+  const { error } = confirmShopOrderValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  await Order.updateOne(
+    { _id: req.body.orderId },
+    {
+      $set: {
+        orderStatus: "Canceled",
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedOrder = await Order.findOne({
+      _id: req.body.orderId,
+    });
+    res.status(201).send(updatedOrder);
   } catch (err) {
     res.status(400).send(err);
   }

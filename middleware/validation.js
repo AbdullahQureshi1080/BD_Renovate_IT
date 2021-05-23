@@ -320,6 +320,20 @@ const addProductValidation = (data) => {
   return validatedShop;
 };
 
+// Update Product Shop
+const updateProductValidation = (data) => {
+  const updateProductValidationSchema = Joi.object({
+    productId: Joi.string().min(6).required(),
+    productName: Joi.string().required(),
+    productDescription: Joi.string().required(),
+    productPrice: Joi.number().required(),
+    productImage: Joi.string().required(),
+    productCategory: Joi.string().required(),
+  });
+  const validatedShop = updateProductValidationSchema.validate(data);
+  return validatedShop;
+};
+
 // Delete Product from  Shop
 const deleteProductValidation = (data) => {
   const deleteProductValidationSchema = Joi.object({
@@ -356,6 +370,24 @@ const updateShopDataValidation = (data) => {
     data: Joi.object().required(),
   });
   const validatedShop = updateShopDataValidationSchema.validate(data);
+  return validatedShop;
+};
+
+// Get Shop Orders
+const getShopOrdersValidation = (data) => {
+  const getShopOrdersValidationSchema = Joi.object({
+    shopId: Joi.string().min(6).required(),
+  });
+  const validatedShop = getShopOrdersValidationSchema.validate(data);
+  return validatedShop;
+};
+
+// Get Buyer Info
+const getBuyerInfoValidation = (data) => {
+  const getBuyerInfoValidationSchema = Joi.object({
+    buyerId: Joi.string().min(6).required(),
+  });
+  const validatedShop = getBuyerInfoValidationSchema.validate(data);
   return validatedShop;
 };
 
@@ -405,8 +437,8 @@ const storePlaceOrderValidation = (data) => {
 // Confirm Order Shop
 const confirmShopOrderValidation = (data) => {
   const confirmShopOrderValidationSchema = Joi.object({
-    userId: Joi.string().min(6).required(),
-    shopId: Joi.string().min(6).required(),
+    // userId: Joi.string().min(6).required(),
+    // shopId: Joi.string().min(6).required(),
     orderId: Joi.string().min(6).required(),
   });
   const validatedShop = confirmShopOrderValidationSchema.validate(data);
@@ -459,8 +491,10 @@ module.exports.deleteFirmValidation = deleteFirmValidation;
 module.exports.registerShopValidation = registerShopValidation;
 module.exports.loginShopValidation = loginShopValidation;
 module.exports.addProductValidation = addProductValidation;
+module.exports.updateProductValidation = updateProductValidation;
 module.exports.updateShopProfileImage = updateShopProfileImage;
 module.exports.getShopDataValidation = getShopDataValidation;
+module.exports.getShopOrdersValidation = getShopOrdersValidation;
 module.exports.updateShopDataValidation = updateShopDataValidation;
 module.exports.getShopProductsValidation = getShopProductsValidation;
 module.exports.deleteProductValidation = deleteProductValidation;
@@ -476,3 +510,4 @@ module.exports.acceptBidValidation = acceptBidValidation;
 module.exports.rejectBidValidation = rejectBidValidation;
 module.exports.bidValidation = bidValidation;
 module.exports.userBidValidation = userBidValidation;
+module.exports.getBuyerInfoValidation = getBuyerInfoValidation;
