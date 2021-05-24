@@ -306,6 +306,16 @@ const loginShopValidation = (data) => {
   return validatedShop;
 };
 
+// Update Password Shop
+const passwordShopValidation = (data) => {
+  const shopValidationSchema = Joi.object({
+    shopId: Joi.string().min(6).required(),
+    password: Joi.string().min(6).required(),
+  });
+  const validatedShop = shopValidationSchema.validate(data);
+  return validatedShop;
+};
+
 // Add Products to Shop
 const addProductValidation = (data) => {
   const addProductValidationSchema = Joi.object({
@@ -490,6 +500,7 @@ module.exports.deleteNoteValidation = deleteNoteValidation;
 module.exports.deleteFirmValidation = deleteFirmValidation;
 module.exports.registerShopValidation = registerShopValidation;
 module.exports.loginShopValidation = loginShopValidation;
+module.exports.passwordShopValidation = passwordShopValidation;
 module.exports.addProductValidation = addProductValidation;
 module.exports.updateProductValidation = updateProductValidation;
 module.exports.updateShopProfileImage = updateShopProfileImage;

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
- const shopScheme = new mongoose.Schema({
-
+const shopScheme = new mongoose.Schema({
   shopName: {
     type: String,
     required: true,
@@ -39,8 +38,10 @@ const mongoose = require("mongoose");
     type: Date,
     default: Date.now,
   },
-  products:[],
-  orders:[],
+  about: { type: String },
+  products: [],
+  orders: [],
+  previousOrders: [],
 });
- 
+
 module.exports = mongoose.model("Shop", shopScheme);

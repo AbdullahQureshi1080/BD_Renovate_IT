@@ -123,6 +123,30 @@ router.post("/placeOrder", async (req, res) => {
         }
       }
     );
+
+    if (
+      shop.previousOrders.length == 0 ||
+      shop.orders.length > shop.previousOrders.length
+    ) {
+      await Shop.updateOne(
+        { _id: req.body.shopId },
+        {
+          $addToSet: {
+            previousOrders: {
+              id: savedOrder._id,
+              date: savedOrder.date,
+            },
+          },
+        },
+        function (err, docs) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Updated Docs : ", docs);
+          }
+        }
+      );
+    }
     res.status(201).send(savedOrder);
   } catch (err) {
     res.status(400).send("An Error Occured", err);

@@ -13,6 +13,7 @@ const {
   getShopOrdersValidation,
   confirmShopOrderValidation,
   getBuyerInfoValidation,
+  passwordShopValidation,
 } = require("../middleware/validation");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
@@ -87,6 +88,47 @@ router.post("/login", async (req, res) => {
     process.env.TOKEN_SECRET
   );
   res.send(token);
+});
+
+// Login  Route
+router.post("/updatePassword", async (req, res) => {
+  // Validate data of user
+  const { error } = passwordShopValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  // Checking if email exists
+  const shop = await Shop.findOne({ _id: req.body.shopId });
+  if (!shop) return res.status(400).send("Shop does not exists");
+
+  // Hash the Password
+  // String with complexity of 10
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+  await Shop.updateOne(
+    { _id: req.body.shopId },
+    {
+      $set: {
+        password: hashedPassword,
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedShop = await Shop.findOne({
+      _id: req.body.shopId,
+    });
+    // console.log(updatedShop);
+    res.status(201).send(updatedShop);
+  } catch (err) {
+    res.status(400).send("An Error Occured", err);
+  }
 });
 
 // Adding a new product
