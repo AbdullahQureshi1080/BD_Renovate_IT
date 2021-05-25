@@ -1,10 +1,14 @@
 const router = require("express").Router();
 const User = require("../models/User.js");
-const { updateValidation, getValidation } = require("../middleware/validation");
+const {
+  updateValidation,
+  getValidation,
+  updateNormalValidation,
+} = require("../middleware/validation");
 
 router.post("/updateProfile", async (req, res) => {
+  console.log(req.body);
   const { error } = updateValidation(req.body);
-  // console.log(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   await User.updateOne(
     { email: req.body.email },
@@ -17,6 +21,7 @@ router.post("/updateProfile", async (req, res) => {
         jobtitle: req.body.jobtitle,
         jobcategory: req.body.jobcategory,
         image: req.body.image,
+        profileStatus: req.body.profileStatus,
         // posts:req.body.posts,
       },
     },
@@ -44,6 +49,54 @@ router.post("/updateProfile", async (req, res) => {
       image: updatedUser.image,
       chats: updatedUser.chats,
       firms: updatedUser.firms,
+      profileStatus: updatedUser.profileStatus,
+    };
+    // console.log(sendData);
+    res.status(201).send(sendData);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+router.post("/updateNormalProfile", async (req, res) => {
+  console.log(req.body);
+  const { error } = updateNormalValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  await User.updateOne(
+    { email: req.body.email },
+    {
+      $set: {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        image: req.body.image,
+        profileStatus: req.body.profileStatus,
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedUser = await User.findOne({
+      email: req.body.email.toLowerCase(),
+    });
+    const sendData = {
+      _id: updatedUser._id,
+      firstname: updatedUser.firstname,
+      lastname: updatedUser.lastname,
+      email: updatedUser.email,
+      about: updatedUser.about,
+      location: updatedUser.location,
+      jobtitle: updatedUser.jobtitle,
+      jobcategory: updatedUser.jobcategory,
+      image: updatedUser.image,
+      chats: updatedUser.chats,
+      firms: updatedUser.firms,
+      profileStatus: updatedUser.profileStatus,
     };
     // console.log(sendData);
     res.status(201).send(sendData);
@@ -72,6 +125,7 @@ router.post("/getProfile", async (req, res) => {
     image: user.image,
     chats: user.chats,
     firms: user.firms,
+    profileStatus: user.profileStatus,
     // posts:user.posts,
   };
   res.status(201).send(sendData);

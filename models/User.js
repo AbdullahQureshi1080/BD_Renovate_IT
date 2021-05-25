@@ -43,6 +43,10 @@ const userScheme = new mongoose.Schema({
     min: 20,
     max: 255,
   },
+  profileStatus: {
+    type: String,
+    default: "Normal",
+  },
   date: {
     type: Date,
     default: Date.now,

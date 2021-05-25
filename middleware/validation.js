@@ -12,6 +12,16 @@ const emailValidation = (data) => {
   return emailValidation;
 };
 
+const getSpecificCategoryProfessional = (data) => {
+  const getSpecificCategoryProfessionalValidationSchema = Joi.object({
+    email: Joi.string().min(6).required().email(),
+    category: Joi.string(),
+  });
+  const emailValidation =
+    getSpecificCategoryProfessionalValidationSchema.validate(data);
+  return emailValidation;
+};
+
 // Auth Validations ----------------------------------
 const registerValidation = (data) => {
   const userValidationSchema = Joi.object({
@@ -40,11 +50,25 @@ const updateValidation = (data) => {
     email: Joi.string().min(6).required().email(),
     firstname: Joi.string().min(3).required(),
     lastname: Joi.string().min(3).required(),
-    jobtitle: Joi.string().min(6),
-    about: Joi.string().min(15),
-    location: Joi.string().min(5),
+    jobtitle: Joi.string().min(2),
+    about: Joi.string(),
+    location: Joi.string().min(3),
     jobcategory: Joi.string().required(),
     image: Joi.string(),
+    profileStatus: Joi.string(),
+  });
+  const validatedUser = userValidationSchema.validate(data);
+  return validatedUser;
+};
+
+//  Update Normal Profile
+const updateNormalValidation = (data) => {
+  const userValidationSchema = Joi.object({
+    email: Joi.string().min(6).required().email(),
+    firstname: Joi.string().min(3).required(),
+    lastname: Joi.string().min(3).required(),
+    image: Joi.string(),
+    profileStatus: Joi.string(),
   });
   const validatedUser = userValidationSchema.validate(data);
   return validatedUser;
@@ -480,11 +504,14 @@ const storeCancelOrderValidation = (data) => {
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.updateValidation = updateValidation;
+module.exports.updateNormalValidation = updateNormalValidation;
 module.exports.getValidation = getValidation;
 module.exports.newPostValidation = newPostValidation;
 module.exports.updatePostValidation = updatePostValidation;
 module.exports.deletePostValidation = deletePostValidation;
 module.exports.emailValidation = emailValidation;
+module.exports.getSpecificCategoryProfessional =
+  getSpecificCategoryProfessional;
 module.exports.newProjectValidation = newProjectValidation;
 module.exports.updateProjectValidation = updateProjectValidation;
 module.exports.deleteProjectValidation = deleteProjectValidation;

@@ -4,6 +4,7 @@ const {
   registerValidation,
   loginValidation,
   emailValidation,
+  getSpecificCategoryProfessional,
 } = require("../middleware/validation");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
@@ -108,26 +109,31 @@ router.post("/getAllUsers", async (req, res) => {
   res.status(201).send(userData);
 });
 
-// // Auth with Google
-// router.get('/google', passport.authenticate('google', {scope:['profile']}))
+router.post("/getSpecificCategoryProfessional", async (req, res) => {
+  // console.log(req.body)
+  const { error } = getSpecificCategoryProfessional(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  const user = await User.findOne({
+    email: req.body.email.toLowerCase(),
+  });
+  if (!user) res.status(400).send("Invalid request for get-all-users");
+  const allUsers = await User.find({ jobcategory: req.body.category });
+  // console.log(allUsers);
+  const userData = allUsers.map((user) => ({
+    name: `${user.firstname} ${user.lastname}`,
+    _id: user.id,
+    email: user.email,
+    about: user.about,
+    location: user.location,
+    jobtitle: user.jobtitle,
+    jobcategory: user.jobcategory,
+    image: user.image,
+    posts: user.posts,
+    projects: user.projects,
+  }));
 
-// // Google auth callback
-// router.get('/google/callback', passport.authenticate('google', {failureRedirect:'/failed'}),
-//  (req,res) =>{
-//     res.redirect('/good')
-// })
-
-// router.get('/failed', async (req,res)=>{
-//     res.send("Authentication Failed")
-// })
-// router.get('/good', islogged , async(req,res)=>{
-//     res.send(`Authentication Success, Welcome to RenovateIT ${req.user.displayName}`)
-// })
-
-// router.get('/logout', async (req, res) => {
-//     req.session = null;
-//     req.logout();
-//     res.redirect('/');
-// })
+  // console.log(userData);
+  res.status(201).send(userData);
+});
 
 module.exports = router;
