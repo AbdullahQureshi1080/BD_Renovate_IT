@@ -56,6 +56,7 @@ const userScheme = new mongoose.Schema({
   chats: [],
   firms: [],
   storeOrders: [],
+  saved: [],
 });
 
 module.exports = mongoose.model("User", userScheme);

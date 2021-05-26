@@ -500,6 +500,27 @@ const storeCancelOrderValidation = (data) => {
   return validatedOrder;
 };
 
+// save Validation
+
+const saveValidation = (data) => {
+  const saveValidationSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+    image: Joi.string(),
+  });
+  const validatedSave = saveValidationSchema.validate(data);
+  return validatedSave;
+};
+
+// get save Validation
+
+const savedItemsValidation = (data) => {
+  const savedItemsValidationSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+  });
+  const validatedSave = savedItemsValidationSchema.validate(data);
+  return validatedSave;
+};
+
 // Exports
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
@@ -549,3 +570,5 @@ module.exports.rejectBidValidation = rejectBidValidation;
 module.exports.bidValidation = bidValidation;
 module.exports.userBidValidation = userBidValidation;
 module.exports.getBuyerInfoValidation = getBuyerInfoValidation;
+module.exports.saveValidation = saveValidation;
+module.exports.savedItemsValidation = savedItemsValidation;

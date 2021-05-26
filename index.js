@@ -33,6 +33,7 @@ const chatRoute = require("./routes/chats");
 const remoteFirmRoute = require("./routes/remoteFirm");
 const shopRoute = require("./routes/shop");
 const storeRoute = require("./routes/store");
+const saveRoute = require("./routes/save");
 
 // --------- Middlewares
 app.use(express.json());
@@ -52,6 +53,7 @@ app.use("/api/chats", chatRoute);
 app.use("/api/remoteFirm", remoteFirmRoute);
 app.use("/api/shop", shopRoute);
 app.use("/api/store", storeRoute);
+app.use("/api/save", saveRoute);
 
 // Port/Host Connection
 const PORT = process.env.PORT || 3000;
