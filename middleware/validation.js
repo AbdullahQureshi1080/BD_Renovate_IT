@@ -510,6 +510,15 @@ const saveValidation = (data) => {
   const validatedSave = saveValidationSchema.validate(data);
   return validatedSave;
 };
+const unSaveValidation = (data) => {
+  const saveValidationSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+    itemId: Joi.string().required()
+  });
+  const validatedSave = saveValidationSchema.validate(data);
+  return validatedSave;
+};
+
 
 // get save Validation
 
@@ -571,4 +580,5 @@ module.exports.bidValidation = bidValidation;
 module.exports.userBidValidation = userBidValidation;
 module.exports.getBuyerInfoValidation = getBuyerInfoValidation;
 module.exports.saveValidation = saveValidation;
+module.exports.unSaveValidation=unSaveValidation;
 module.exports.savedItemsValidation = savedItemsValidation;
