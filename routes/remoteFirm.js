@@ -94,19 +94,10 @@ router.post("/getUserFirms", async (req, res) => {
     email: req.body.email.toLowerCase(),
   });
   if (!user) res.status(400).send("User does not exist");
-  const userFirms = user.firms.map((id) => id);
+  const firms = user.firms.map(({id}) => id);
   const allFirms = await Firm.find();
-  const firms = allFirms.filter((firm) => {
-    let data = [];
-    for (var i = 0; i < userFirms.length; i++) {
-      if (firm._id == userFirms[i]) {
-        data.push(firm);
-      }
-    }
-    return data;
-  });
-  // console.log(userPosts);
-  res.status(201).send(firms);
+  const userFirms = allFirms.filter(({_id}) => firms.includes(_id));
+  res.status(201).send(userFirms);
 });
 
 router.post("/createNote", async (req, res) => {
