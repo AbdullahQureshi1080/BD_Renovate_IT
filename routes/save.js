@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const {
   saveValidation,
-  unSaveValidation
+  unSaveValidation,
   savedItemsValidation,
 } = require("../middleware/validation");
 const User = require("../models/User");
@@ -44,7 +44,6 @@ router.post("/save", async (req, res) => {
   }
 });
 
-
 router.post("/unSave", async (req, res) => {
   // console.log(req.body);
   const { error } = unSaveValidation(req.body);
@@ -54,8 +53,8 @@ router.post("/unSave", async (req, res) => {
   await User.updateOne(
     { _id: req.body.userId },
     {
-        $pull: { saved: { _id: mongoose.Types.ObjectId(req.body.itemId) } },
-      },
+      $pull: { saved: { _id: mongoose.Types.ObjectId(req.body.itemId) } },
+    },
     function (err, docs) {
       if (err) {
         console.log(err);
@@ -74,7 +73,6 @@ router.post("/unSave", async (req, res) => {
     res.status(400).send("An Error Occured", err);
   }
 });
-
 
 router.post("/getSavedItems", async (req, res) => {
   // console.log(req.body);
