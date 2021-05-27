@@ -506,6 +506,7 @@ const saveValidation = (data) => {
   const saveValidationSchema = Joi.object({
     userId: Joi.string().min(6).required(),
     image: Joi.string(),
+    type:Joi.string(),
   });
   const validatedSave = saveValidationSchema.validate(data);
   return validatedSave;

@@ -21,6 +21,7 @@ router.post("/save", async (req, res) => {
         saved: {
           _id: mongoose.Types.ObjectId(),
           image: req.body.image,
+          type: req.body.type,
           date: new Date(),
         },
       },
