@@ -7,6 +7,9 @@ const {
   deleteNoteValidation,
   deleteFirmValidation,
   updateNoteValidation,
+  updateFirmValidation,
+  addMemberFirmValidation,
+  removeMemberFirmValidation,
 } = require("../middleware/validation");
 const User = require("../models/User");
 const Firm = require("../models/Firm");
@@ -94,9 +97,9 @@ router.post("/getUserFirms", async (req, res) => {
     email: req.body.email.toLowerCase(),
   });
   if (!user) res.status(400).send("User does not exist");
-  const firms = user.firms.map(({id}) => id);
+  const firms = user.firms.map(({ id }) => id);
   const allFirms = await Firm.find();
-  const userFirms = allFirms.filter(({_id}) => firms.includes(_id));
+  const userFirms = allFirms.filter(({ _id }) => firms.includes(_id));
   res.status(201).send(userFirms);
 });
 
@@ -277,42 +280,154 @@ router.post("/updateNote", async (req, res) => {
 
 // Updating a Firm
 
-// router.post("/addMember", async (req, res) => {
-//     const { error } = updateFirmValidation(req.body);
-//     if (error) return res.status(400).send(error.details[0].message);
-//     console.log(req.body);
+router.post("/updateFirm", async (req, res) => {
+  const { error } = updateFirmValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  console.log(req.body);
 
-//     await Firm.updateOne(
-//       { _id: req.body.id },
-//       {
-//         {
-//             $addToSet: {
-//                 members: {
-//                 id: savedFirm._id,
-//                 date: savedFirm.date,
-//               }
-//                 // savedPost
+  await Firm.updateOne(
+    { _id: req.body.firmId },
+    {
+      $set: {
+        title: req.body.title,
+        description: req.body.description,
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedFirm = await Firm.findOne({
+      _id: req.body.firmId,
+    });
+    // console.log(updatedFirm);
+    res.status(201).send(updatedFirm);
+  } catch (err) {
+    res.status(400).send("An Error Occured", err);
+  }
+});
 
-//             },
-//           },
-//       },
-//       function (err, docs) {
-//         if (err) {
-//           console.log(err);
-//         } else {
-//           console.log("Updated Docs : ", docs);
-//         }
-//       }
-//     );
-//     try {
-//       const updatedPost = await Post.findOne({
-//         _id: req.body.id,
-//       });
-//       console.log(updatedPost);
-//       res.status(201).send(updatedPost);
-//     } catch (err) {
-//       res.status(400).send("An Error Occured", err);
-//     }
-//   });
+// Add a new member
+
+router.post("/addNewMember", async (req, res) => {
+  const { error } = addMemberFirmValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  console.log(req.body);
+
+  const firm = await Firm.findOne({
+    _id: mongoose.Types.ObjectId(req.body.firmId),
+  });
+
+  const newUser = await User.findOne({
+    _id: mongoose.Types.ObjectId(req.body.memberId),
+  });
+  // const members = Firm.find({ _id: req.body.firmId });
+
+  // const filteredMembers
+  const newMember = {
+    _id: newUser._id,
+    name: `${newUser.firstname} ${newUser.lastname}`,
+    email: newUser.email,
+    image: newUser.image,
+    jobcategory: newUser.jobcategory,
+    jobtitle: newUser.jobtitle,
+  };
+
+  await Firm.updateOne(
+    { _id: req.body.firmId },
+    {
+      $addToSet: {
+        members: newMember,
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  await User.updateOne(
+    { _id: req.body.memberId },
+    {
+      $addToSet: {
+        firms: {
+          id: firm._id,
+          date: firm.date,
+        },
+      },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedFirm = await Firm.findOne({
+      _id: req.body.firmId,
+    });
+    // console.log(updatedFirm);
+    res.status(201).send(updatedFirm);
+  } catch (err) {
+    res.status(400).send("An Error Occured", err);
+  }
+});
+
+// remove a  member
+
+router.post("/removeMember", async (req, res) => {
+  const { error } = removeMemberFirmValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  console.log(req.body);
+
+  await Firm.updateOne(
+    { _id: req.body.firmId },
+    {
+      $pull: { members: { _id: mongoose.Types.ObjectId(req.body.memberId) } },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  await User.updateOne(
+    { _id: req.body.memberId },
+    {
+      $pull: { firms: { id: mongoose.Types.ObjectId(req.body.firmId) } },
+    },
+    function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Updated Docs : ", docs);
+      }
+    }
+  );
+  try {
+    const updatedFirm = await Firm.findOne({
+      _id: req.body.firmId,
+    });
+    const updatedUser = await User.findOne({
+      _id: req.body.memberId,
+    });
+    // console.log(updatedFirm);
+    res.status(201).send(updatedFirm.members);
+    // res.status(201).send(updatedUser.firms);
+  } catch (err) {
+    res.status(400).send("An Error Occured", err);
+  }
+});
 
 module.exports = router;

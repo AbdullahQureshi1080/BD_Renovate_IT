@@ -309,6 +309,37 @@ const deleteFirmValidation = (data) => {
   return firm;
 };
 
+const addMemberFirmValidation = (data) => {
+  const addFirmValidationScheme = Joi.object({
+    // email: Joi.string().min(6).required().email(),
+    firmId: Joi.required().required(),
+    memberId: Joi.string().required(),
+  });
+  const firm = addFirmValidationScheme.validate(data);
+  return firm;
+};
+
+const removeMemberFirmValidation = (data) => {
+  const removeFirmValidationScheme = Joi.object({
+    // email: Joi.string().min(6).required().email(),
+    firmId: Joi.required().required(),
+    memberId: Joi.string().required(),
+  });
+  const firm = removeFirmValidationScheme.validate(data);
+  return firm;
+};
+
+const updateFirmValidation = (data) => {
+  const updateFirmValidationScheme = Joi.object({
+    // email: Joi.string().min(6).required().email(),
+    firmId: Joi.required().required(),
+    description: Joi.string(),
+    title: Joi.string(),
+  });
+  const firm = updateFirmValidationScheme.validate(data);
+  return firm;
+};
+
 // Shop Validations
 const registerShopValidation = (data) => {
   const shopValidationSchema = Joi.object({
@@ -506,7 +537,7 @@ const saveValidation = (data) => {
   const saveValidationSchema = Joi.object({
     userId: Joi.string().min(6).required(),
     image: Joi.string(),
-    type:Joi.string(),
+    type: Joi.string(),
   });
   const validatedSave = saveValidationSchema.validate(data);
   return validatedSave;
@@ -514,12 +545,11 @@ const saveValidation = (data) => {
 const unSaveValidation = (data) => {
   const saveValidationSchema = Joi.object({
     userId: Joi.string().min(6).required(),
-    itemId: Joi.string().required()
+    itemId: Joi.string().required(),
   });
   const validatedSave = saveValidationSchema.validate(data);
   return validatedSave;
 };
-
 
 // get save Validation
 
@@ -556,6 +586,7 @@ module.exports.updateNoteValidation = updateNoteValidation;
 module.exports.getNoteValidation = getNoteValidation;
 module.exports.deleteNoteValidation = deleteNoteValidation;
 module.exports.deleteFirmValidation = deleteFirmValidation;
+module.exports.updateFirmValidation = updateFirmValidation;
 module.exports.registerShopValidation = registerShopValidation;
 module.exports.loginShopValidation = loginShopValidation;
 module.exports.passwordShopValidation = passwordShopValidation;
@@ -581,5 +612,7 @@ module.exports.bidValidation = bidValidation;
 module.exports.userBidValidation = userBidValidation;
 module.exports.getBuyerInfoValidation = getBuyerInfoValidation;
 module.exports.saveValidation = saveValidation;
-module.exports.unSaveValidation=unSaveValidation;
+module.exports.unSaveValidation = unSaveValidation;
 module.exports.savedItemsValidation = savedItemsValidation;
+module.exports.addMemberFirmValidation = addMemberFirmValidation;
+module.exports.removeMemberFirmValidation = removeMemberFirmValidation;
