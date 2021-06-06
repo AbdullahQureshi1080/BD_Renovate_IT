@@ -12,6 +12,14 @@ const emailValidation = (data) => {
   return emailValidation;
 };
 
+const userIdValidation = (data) => {
+  const userIdValidationSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+  });
+  const userIdValidation = userIdValidationSchema.validate(data);
+  return userIdValidation;
+};
+
 const getSpecificCategoryProfessional = (data) => {
   const getSpecificCategoryProfessionalValidationSchema = Joi.object({
     email: Joi.string().min(6).required().email(),
@@ -561,6 +569,17 @@ const savedItemsValidation = (data) => {
   return validatedSave;
 };
 
+//  Save Notification Validation
+
+const saveNotificationValidation = (data) => {
+  const saveNotificationValidationSchema = Joi.object({
+    userId: Joi.string().min(6).required(),
+    message: Joi.string(),
+  });
+  const validatedSave = saveNotificationValidationSchema.validate(data);
+  return validatedSave;
+};
+
 // Exports
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
@@ -616,3 +635,5 @@ module.exports.unSaveValidation = unSaveValidation;
 module.exports.savedItemsValidation = savedItemsValidation;
 module.exports.addMemberFirmValidation = addMemberFirmValidation;
 module.exports.removeMemberFirmValidation = removeMemberFirmValidation;
+module.exports.userIdValidation = userIdValidation;
+module.exports.saveNotificationValidation = saveNotificationValidation;

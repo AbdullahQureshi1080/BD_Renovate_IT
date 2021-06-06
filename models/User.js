@@ -51,6 +51,7 @@ const userScheme = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  notifications: [],
   posts: [],
   projects: [],
   chats: [],
