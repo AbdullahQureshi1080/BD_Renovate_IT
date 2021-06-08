@@ -21,6 +21,14 @@ const bidScheme = new mongoose.Schema({
     type: String,
     default: "active",
   },
+  bidCategory: {
+    type: String,
+    required: true,
+  },
+  bidTime: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now,

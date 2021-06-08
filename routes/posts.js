@@ -108,6 +108,7 @@ router.post("/offerBid", async (req, res) => {
     message: req.body.message,
     bidAmount: req.body.bidAmount,
     bidCategory: req.body.bidCategory,
+    bidTime: req.body.bidTime,
   });
   await Post.updateOne(
     { _id: req.body.postId },

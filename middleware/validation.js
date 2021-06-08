@@ -136,7 +136,8 @@ const offerBidValidation = (data) => {
     postId: Joi.string().min(6).required(),
     message: Joi.string().min(6).required(),
     bidAmount: Joi.number().required(),
-    bidCategory: Joi.category().required(),
+    bidCategory: Joi.string().required(),
+    bidTime: Joi.string().required(),
   });
   const bid = offerBidValidationScheme.validate(data);
   return bid;
