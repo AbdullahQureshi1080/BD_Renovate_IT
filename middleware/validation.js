@@ -136,6 +136,7 @@ const offerBidValidation = (data) => {
     postId: Joi.string().min(6).required(),
     message: Joi.string().min(6).required(),
     bidAmount: Joi.number().required(),
+    bidCategory: Joi.category().required(),
   });
   const bid = offerBidValidationScheme.validate(data);
   return bid;
@@ -575,6 +576,7 @@ const saveNotificationValidation = (data) => {
   const saveNotificationValidationSchema = Joi.object({
     userId: Joi.string().min(6).required(),
     message: Joi.string(),
+    users: Joi.array(),
   });
   const validatedSave = saveNotificationValidationSchema.validate(data);
   return validatedSave;

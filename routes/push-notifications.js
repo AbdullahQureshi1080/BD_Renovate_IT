@@ -14,26 +14,29 @@ router.post("/saveNotification", async (req, res) => {
   // console.log(req.body);
   const user = await User.findOne({ _id: req.body.userId });
   if (user) {
-    await User.updateOne(
-      { _id: req.body.userId },
-      {
-        $addToSet: {
-          notifications: {
-            _id: mongoose.Types.ObjectId(),
-            message: req.body.message,
-            userName: `${user.firstname} ${user.lastname}`,
-            userImage: user.image,
+    for (var i = 0; i < req.body.users.length; i++) {
+      await User.updateOne(
+        { _id: req.body.users[i] },
+        {
+          $addToSet: {
+            notifications: {
+              _id: mongoose.Types.ObjectId(),
+              message: req.body.message,
+              userName: `${user.firstname} ${user.lastname}`,
+              userImage: user.image,
+            },
           },
         },
-      },
-      function (err, docs) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("Updated Docs : ", docs);
+        function (err, docs) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Updated Docs : ", docs);
+          }
         }
-      }
-    );
+      );
+    }
+
     try {
       const updatedUser = await User.findOne({
         _id: req.body.userId,
