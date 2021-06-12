@@ -157,29 +157,29 @@ router.post("/acceptBid", async (req, res) => {
       }
     }
   );
-  const post = await Post.findOne({ _id: req.body.postId });
+  // const post = await Post.findOne({ _id: req.body.postId });
   // const bids = post.bids;
-  const bidIds = post.bids.filter((bid) => {
-    return bid._id != req.body.bidId;
-  });
-  for (var i = 0; i < bidIds.length; i++) {
-    // if (req.body.members[i] === null) continue;
-    await Post.updateOne(
-      { "bids._id": mongoose.Types.ObjectId(bidIds[i]._id) },
-      {
-        $set: {
-          "bids.$.bidStatus": "Rejected",
-        },
-      },
-      function (err, docs) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("Updated Docs : ", docs);
-        }
-      }
-    );
-  }
+  // const bidIds = post.bids.filter((bid) => {
+  //   return bid._id != req.body.bidId;
+  // });
+  // for (var i = 0; i < bidIds.length; i++) {
+  //   // if (req.body.members[i] === null) continue;
+  //   await Post.updateOne(
+  //     { "bids._id": mongoose.Types.ObjectId(bidIds[i]._id) },
+  //     {
+  //       $set: {
+  //         "bids.$.bidStatus": "Rejected",
+  //       },
+  //     },
+  //     function (err, docs) {
+  //       if (err) {
+  //         console.log(err);
+  //       } else {
+  //         console.log("Updated Docs : ", docs);
+  //       }
+  //     }
+  //   );
+  // }
   try {
     const updatedPost = await Post.findOne({
       _id: req.body.postId,
